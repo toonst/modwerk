@@ -1,0 +1,143 @@
+{
+  "schemaVersion": 3,
+  "id": "macro-mode",
+  "name": "Macro Mode",
+  "version": "0.1.0-experimental",
+  "machine": "digitakt-ii",
+  "category": "scenes",
+  "exclusive": false,
+  "author": {
+    "github": "toonst",
+    "credits": [
+      "toonst — macro mode, its design and code, and core-dt2 1.1's frame values, key LEDs and kit and project data it runs on.",
+      "irpina — Elekloader and core-dt2, the core the Digitakt II base starts from."
+    ]
+  },
+  "maintainers": [
+    "toonst"
+  ],
+  "source": {
+    "repository": "https://github.com/toonst/digi_macro",
+    "revision": "89abd8ebf9944a15e58124c50f7a34b892061e38",
+    "path": "."
+  },
+  "presentation": {
+    "label": "MACRO MODE",
+    "family": "Performance macros",
+    "summary": "Hold PAGE and press MOD: encoders A-H become eight macro knobs, each moving up to four sound parameters on the tracks you choose.",
+    "overview": "Macro Mode adds a page of eight performance macros. Each macro moves up to four destinations, picked from a list like the stock modulation setup's, each with its own depth and its own set of tracks. The macros ride on top of the sound as the stock modulators do, once a frame, so they never change the kit, cannot be recorded or locked, and leave the saved sound as it was. The setup and the knob positions are saved inside the project, either once for the whole project or per kit (SETTINGS > PERSONALIZE > MACRO SETUP), and travel with pattern and kit copies.",
+    "highlights": [
+      "Eight macro knobs on encoders A-H, LEVEL/DATA moves all eight together",
+      "Each macro drives up to four parameters, each with its own depth and its own tracks",
+      "Rides on top of the kit like the stock modulation: the saved sound never changes",
+      "One setup per project or one per kit, saved in the project and carried by copies",
+      "Projects stay readable on the stock OS"
+    ],
+    "usage": [
+      "Hold PAGE and press MOD to open the macro page; MOD lights blue.",
+      "FUNC + push an encoder to set up that macro: encoders A-D choose its four parameters, E-H their depths, the trig keys their tracks.",
+      "Turn A-H to move the macros, LEVEL/DATA to move all eight, FUNC + NO to centre them; MOD or a page key leaves."
+    ]
+  },
+  "access": {
+    "location": "Hold PAGE and press MOD (or MOD and then PAGE). SETTINGS > PERSONALIZE > MACRO SETUP chooses one setup per project or per kit.",
+    "steps": [
+      "Hold PAGE and press MOD: the macro page opens and MOD lights blue.",
+      "FUNC + push an encoder opens that macro's setup; FUNC + push and hold names it.",
+      "NO or MOD goes back from the setup; MOD or another page key leaves macro mode."
+    ],
+    "screenshots": []
+  },
+  "controls": [
+    {
+      "name": "MACRO A-H",
+      "default": 0,
+      "doc": "Encoders A-H on the macro page: each macro's position, -64 to +63, centre 0. The four destinations of a macro move by position x depth, held in each parameter's range. LEVEL/DATA moves all eight; FUNC + NO or a push of LEVEL/DATA centres them.",
+      "labels": null
+    },
+    {
+      "name": "MACRO SETUP",
+      "default": 0,
+      "doc": "Row in SETTINGS > PERSONALIZE: PROJECT keeps one setup and one set of knob positions for the project, KIT one per pattern's kit, which comes on with the pattern. LEFT and RIGHT change it. Kept on the unit.",
+      "labels": [
+        "PROJECT",
+        "KIT"
+      ]
+    }
+  ],
+  "compatibility": {
+    "releases": [
+      "1.17"
+    ],
+    "requires": [],
+    "conflicts": [],
+    "limitations": [
+      "Needs the Digitakt II base with core 1.1's frame values, key LEDs and project and kit data; it does not build on core 1.0.",
+      "With MACRO SETUP on KIT it takes all 191 bytes of kit data a Digitakt II kit record has, so no other module that keeps kit data can be installed beside it.",
+      "Keeps its two settings in two card sectors the stock OS does not write (0x2df0e00-0x2df0e02).",
+      "Macros are for playing: they cannot be recorded or parameter-locked, and they never change the saved sound.",
+      "Machine-specific parameters and the LFOs cannot be chosen as destinations yet.",
+      "KIT MANAGER's PASTE KIT and undo are not tested with per-kit setups; pattern copy and paste is.",
+      "Projects saved with digi_macro builds before 0.1 open, but their macro setups are not read."
+    ]
+  },
+  "platform": {
+    "kind": "elemod",
+    "core": "1.1",
+    "build": "build.json",
+    "events": [
+      "ev_key",
+      "ev_enc",
+      "ev_tick",
+      "ev_draw",
+      "ev_frame_params",
+      "ev_key_leds",
+      "ev_personalize"
+    ],
+    "claims": [
+      "ui:PAGE + MOD",
+      "ui:macro mode",
+      "personalize:MACRO SETUP",
+      "kitdata:MMK2",
+      "projdata:MMP2",
+      "card:0x2df0e00-0x2df0e02"
+    ]
+  },
+  "resources": {
+    "memoryBytes": null,
+    "fastBytes": null,
+    "load": {
+      "display": "Not measured yet",
+      "method": "unmeasured",
+      "conditions": "Measure with every track playing, all eight macros turning on four destinations each, and per-kit setups on."
+    }
+  },
+  "evidence": {
+    "tier": "none",
+    "moduleVersion": "0.1.0-experimental",
+    "sourceSha256": null,
+    "reports": [],
+    "hardware": null,
+    "verifiedBy": null
+  },
+  "tests": {
+    "report": "TESTING.md",
+    "summary": "Not yet built or run from this folder. The same source, built with elekloader against core-dt2 1.1, passed digi_macro's host tests and its digikit emulator scenarios, and its author reports it running on a Digitakt II on OS 1.17. See TESTING.md."
+  },
+  "license": {
+    "spdx": "GPL-2.0-or-later",
+    "file": "LICENSE",
+    "declaration": "The author's own source, from github.com/toonst/digi_macro at 89abd8e, under GPL-2.0-or-later. Firmware locations are addresses only; no firmware bytes."
+  },
+  "media": [
+    {
+      "path": "media/thumbnail.svg",
+      "kind": "thumbnail",
+      "caption": "Macro Mode: eight knobs, each fanning out to four parameters",
+      "alt": "Eight knobs in a row, the third with four lines fanning out to small parameter bars.",
+      "credit": "toonst",
+      "license": "GPL-2.0-or-later",
+      "source": "Original illustration for this module."
+    }
+  ]
+}

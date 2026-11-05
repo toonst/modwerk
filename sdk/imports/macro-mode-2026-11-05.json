@@ -1,0 +1,84 @@
+{
+  "schemaVersion": 1,
+  "module": "digitakt-ii/macro-mode",
+  "version": "0.1.0-experimental",
+  "date": "2026-11-05",
+  "upstream": {
+    "repository": "https://github.com/toonst/digi_macro",
+    "revision": "89abd8ebf9944a15e58124c50f7a34b892061e38",
+    "path": ".",
+    "license": "GPL-2.0-or-later"
+  },
+  "changes": [
+    "Macro mode's source imported unchanged from toonst/digi_macro at 89abd8e: the eleven files under src/, its LICENSE and its README (as upstream/README.md).",
+    "89abd8e moves the firmware locations from the manifest's compiler flags into src/mm_os.h and -fno-tree-loop-distribute-patterns into a pragma in mm.h, so build.json passes only -DMM_DT2 and -DMM_FEATURE_KITS. With m68k-linux-gnu GCC 13.3 every object's text, disassembly and relocations are identical to ac5c237's.",
+    "build.json is written from upstream's mods/dt2/mod.json and mods/dt2/kits.json: the same sources, subscriptions, contributions and claims. It has no stock sites: everything the module hooks is core 1.1's."
+  ],
+  "files": [
+    {
+      "from": "src/mm.h",
+      "to": "src/mm.h",
+      "sha256": "13f7f8ec65b0ed0ebf69f656713cd1fe18f7a28f0ec1a382f44a1d26afdda251"
+    },
+    {
+      "from": "src/mm_apply.c",
+      "to": "src/mm_apply.c",
+      "sha256": "b96348f1624792a608a0de8e52347a366adf2074cd31d887de30acf9753fd90e"
+    },
+    {
+      "from": "src/mm_dests.c",
+      "to": "src/mm_dests.c",
+      "sha256": "99dcc9ab537208d9780c8bf35c5e10e8c82f44ead6e0505477303d9664e39d85"
+    },
+    {
+      "from": "src/mm_draw.c",
+      "to": "src/mm_draw.c",
+      "sha256": "a3eeeb60f1851b234abf09e53482ca951a59c42e6c76ea24758876808f29f896"
+    },
+    {
+      "from": "src/mm_glue.c",
+      "to": "src/mm_glue.c",
+      "sha256": "fb99777a05bbfc1d064a74b830094a7457fe70b28984b64ffb06ef6d0bbbb07a"
+    },
+    {
+      "from": "src/mm_kits.c",
+      "to": "src/mm_kits.c",
+      "sha256": "add659da13720ef663764f4d452a9d7764655d13b4a100dcdc4d9c0aeead0fe6"
+    },
+    {
+      "from": "src/mm_kits.h",
+      "to": "src/mm_kits.h",
+      "sha256": "fae9aeb548675f45634b6eefd87bb6b44c8e74ed99ca1895d8f6c2b345aecd75"
+    },
+    {
+      "from": "src/mm_logic.c",
+      "to": "src/mm_logic.c",
+      "sha256": "2f7de63c4acd1dfa9870330e73c1f6ab3eda1f03d8fc92188bf7fc851ff621d2"
+    },
+    {
+      "from": "src/mm_os.h",
+      "to": "src/mm_os.h",
+      "sha256": "24ce57ce381ba57f787173f0d949912194a1c278e0395f6a12f6057740d27efb"
+    },
+    {
+      "from": "src/mm_scope.c",
+      "to": "src/mm_scope.c",
+      "sha256": "cbdc32143f57fb6b95dd944656a1835f7f7801588fd256c560908bee4ef651f3"
+    },
+    {
+      "from": "src/mm_store.c",
+      "to": "src/mm_store.c",
+      "sha256": "530871b0ea4ab4786f27652db155878122366d5a69cb28491dde4bab7454cca5"
+    },
+    {
+      "from": "LICENSE",
+      "to": "LICENSE",
+      "sha256": "edaef632cbb643e4e7a221717a6c441a4c1a7c918e6e4d56debc3d8739b233f6"
+    },
+    {
+      "from": "README.md",
+      "to": "upstream/README.md",
+      "sha256": "21ab5f6a8fb97070cb34e99f6407c4ed0937a4a8412999e93764edc07e75c2a4"
+    }
+  ]
+}
