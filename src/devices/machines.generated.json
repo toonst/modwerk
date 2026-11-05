@@ -244,7 +244,7 @@
     "name": "Digitakt II",
     "family": "elektron",
     "status": "research",
-    "summary": "Experimental OS 1.17 support exists in elekloader, with a core and released perform mods. Modwerk integration and qualification are not complete.",
+    "summary": "Experimental OS 1.17 support on Modwerk's own base, from core-dt2 1.1's source. No module is in the library yet, and downloads stay off.",
     "steps": {
       "format": "done",
       "rebuild": "done",
@@ -295,7 +295,7 @@
       "catalog": null,
       "guide": "sdk/machines/digitakt-ii/README.md",
       "core": {
-        "version": "1.0",
+        "version": "1.1",
         "path": "sdk/digitakt-ii/core-profile"
       },
       "toolchain": "m68k-elf GCC and binutils, Modwerk's elemod packager, and the vendored elekloader kit 0.5.0; firmware builds start from the owner's exact OS 1.17 .syx.",
@@ -309,8 +309,8 @@
         {
           "name": "Core image",
           "unit": "bytes",
-          "value": 500,
-          "note": "Core 1.0 build: 480 bytes .run plus 20 bytes .bss; package link check measures each selected module set."
+          "value": 5516,
+          "note": "Modwerk's base (core-dt2 1.1, identity f41b89cd): 3,708 bytes .run plus 1,808 bytes .bss; the linker measures each selected module set."
         },
         {
           "name": "Fast SRAM for code",

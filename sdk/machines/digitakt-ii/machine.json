@@ -4,7 +4,7 @@
   "order": 40,
   "name": "Digitakt II",
   "status": "research",
-  "summary": "Experimental OS 1.17 support on Modwerk's own base, built from core-dt2 1.1's source, with frame values, key LEDs, project and kit data and value rows. No module is in the library yet, and downloads stay off.",
+  "summary": "Experimental OS 1.17 support on Modwerk's own base, from core-dt2 1.1's source. No module is in the library yet, and downloads stay off.",
   "firmware": {
     "releases": [
       {
