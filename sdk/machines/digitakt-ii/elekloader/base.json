@@ -1,0 +1,27 @@
+{
+  "schema": 1,
+  "about": "Modwerk's Digitakt II base, built by npm run machine:base -- digitakt-ii: core-dt2 1.1's source unchanged (elekloader#221 at 0df8409, sdk/imports/core-dt2-source-0df8409.json), with no Modwerk sources added yet. It is checked against core-dt2 1.0's release (toonst/digitakt2-perform v1.0), the core the site built with before: it keeps every site, export, import, table and contribution of 1.0, and adds 1.1's. Its version (1.1) and its sources (1.0 was built from an older core.s, settings.s and personalize.s) are not compared.",
+  "core": "core-dt2",
+  "include": "sdk/machines/digitakt-ii/include",
+  "os": "1.17",
+  "toolchain": {
+    "cross": "m68k-elf-",
+    "gcc": "16.2.0",
+    "binutils": "2.47"
+  },
+  "reference": {
+    "file": "vendor/elekloader/catalog/core-1.0.elemod",
+    "sha256": "95303655a9358f581b485acb68b884b394a577f5d0b373f0a3e5957c8d0ca72c",
+    "keeps": [
+      "id",
+      "sites",
+      "exports",
+      "imports",
+      "weak",
+      "contribute",
+      "collections",
+      "requires",
+      "conflicts"
+    ]
+  }
+}
