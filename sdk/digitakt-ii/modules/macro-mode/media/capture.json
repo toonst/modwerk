@@ -1,0 +1,26 @@
+{
+ "schemaVersion": 1,
+ "machine": "digitakt-ii",
+ "moduleId": "macro-mode",
+ "moduleVersion": "0.1.0-experimental",
+ "imageSha256": "98f9d975e9ccc6caa8695df3014b710a8f41b188cd028952e1f16bbca0144e53",
+ "firmware": "1.17",
+ "build": "core-dt2 1.1 (elekloader 0df8409) + macro mode (digi_macro bc2295e, the same sources as this folder), elekloader.sdk.build and elekloader.patch --version MMDV, m68k-linux-gnu-gcc 13.3. Its main OS is byte-identical to the one the site's builder path makes from this folder's recipe on the same core.",
+ "emulator": "digikit zero_patched (digikit 3d3a243): ColdFire with the DSP side answering zeros, so the frame interrupt runs; the 128x64 frame shown 4x without interpolation",
+ "capturedAt": "2026-11-05",
+ "setup": "The emulator's card with its stock project; the run's panel input as each capture's plan says.",
+ "captures": [
+  {
+   "path": "media/macro-page.png",
+   "sha256": "25c8be347c1ee78d7357da9165a5cbae0b8d1d6818e332263006e71e1cb85484",
+   "plan": "digi_macro bc2295e tests/emu/scenario.py on the cold-booted build (main screen saved, every run from it): STOP, STOP; SETTINGS opened and PAGE + MOD tried (D9); NO, NO; SRC; PAGE held, MOD tapped, PAGE released; settle; frame (scenario screen 02-macro)",
+   "frame": "the macro page, no macro set up yet"
+  },
+  {
+   "path": "media/macro-setup.png",
+   "sha256": "1a4798df1cdb6b9193b76714b6436e0328936a3d148a42364f8263e626cdc8e4",
+   "plan": "digi_macro bc2295e tests/emu/scenario.py on the cold-booted build (main screen saved, every run from it): STOP, STOP; SETTINGS opened and PAGE + MOD tried (D9); NO, NO; SRC; PAGE + MOD; A turned +40, C turned -40; B and D turned 16 (B pushed); push A + NO; push A; FUNC held, push C, FUNC released (setup of macro C); B turned until slot 2 has a destination; NO; F pushed and turned to depth 10.00 or more, then turned 64 unpushed; TRIG 3 and TRIG 5 tapped; settle; frame (scenario screen 07-setup-edited)",
+   "frame": "the setup of macro C: parameter 2 set to SRC TUNE with its depth"
+  }
+ ]
+}

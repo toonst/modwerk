@@ -35,6 +35,8 @@ The setup and the knobs' positions are saved inside the project, either once for
 
 ## Usage
 
+Set up one macro, then play it. The screens are under [Screens and audio](#screens-and-audio).
+
 ### Quick tutorial
 
 1. Hold PAGE and press MOD: the macro page opens and MOD lights blue.
@@ -58,7 +60,7 @@ Macro mode works as a page: the keys it does not use keep their stock function, 
 
 ## Tests and measurements
 
-See [TESTING.md](TESTING.md). In short: this folder's build has not been made or run yet. Its source, built with elekloader on an earlier core-dt2 1.1, passed digi_macro's host tests and its digikit emulator scenarios, and its author reports it running on a Digitakt II on OS 1.17.
+See [TESTING.md](TESTING.md). In short: this folder's build, linked on core-dt2 1.1 through the site's builder path (a local build, not the pinned toolchain), passed digi_macro's digikit emulator scenarios on OS 1.17: 94, 32 and 12 checks. Its author reports the module running on a Digitakt II with an earlier core. It has not run on a unit from this folder.
 
 ## Authorship and licences
 
@@ -66,4 +68,8 @@ Macro mode is toonst's, from [toonst/digi_macro](https://github.com/toonst/digi_
 
 ## Screens and audio
 
-Screens of the macro page and the setup, captured in the digikit emulator from this folder's build, are to come with the capture record. The module makes no sound of its own: it moves the parameters of the stock sound.
+![The macro page](media/macro-page.png)
+
+![The setup of macro C](media/macro-setup.png)
+
+Both are captures of the build TESTING.md describes, in digikit's emulator ([capture record](media/capture.json)). The module makes no sound of its own: it moves the parameters of the stock sound.

@@ -34,9 +34,11 @@
       "Projects stay readable on the stock OS"
     ],
     "usage": [
-      "Hold PAGE and press MOD to open the macro page; MOD lights blue.",
-      "FUNC + push an encoder to set up that macro: encoders A-D choose its four parameters, E-H their depths, the trig keys their tracks.",
-      "Turn A-H to move the macros, LEVEL/DATA to move all eight, FUNC + NO to centre them; MOD or a page key leaves."
+      "Hold PAGE and press MOD: the macro page opens and MOD lights blue.",
+      "Hold FUNC and push encoder A: the setup of macro A opens.",
+      "Turn encoder A to choose FLTR FREQ, and encoder E to set its depth, for example +64.00.",
+      "Press the trig keys of the tracks it should act on; they light red.",
+      "Press NO, then turn encoder A: the filter opens and closes on those tracks, and the kit stays as saved."
     ]
   },
   "access": {
@@ -46,7 +48,10 @@
       "FUNC + push an encoder opens that macro's setup; FUNC + push and hold names it.",
       "NO or MOD goes back from the setup; MOD or another page key leaves macro mode."
     ],
-    "screenshots": []
+    "screenshots": [
+      "media/macro-page.png",
+      "media/macro-setup.png"
+    ]
   },
   "controls": [
     {
@@ -122,7 +127,24 @@
   },
   "tests": {
     "report": "TESTING.md",
-    "summary": "Not yet built or run from this folder. Its source, built with elekloader on an earlier core-dt2 1.1, passed digi_macro's host tests and its digikit emulator scenarios, and its author reports it running on a Digitakt II on OS 1.17. See TESTING.md."
+    "summary": "Emulator: this folder's build (local GCC 13.3, a local core-dt2 1.1, through the site's builder path) passed digi_macro's digikit scenarios on OS 1.17, 94 + 32 + 12 checks. Its author reports the module running on a Digitakt II with an earlier core. Not built in the pinned toolchain or run on a unit yet. See TESTING.md.",
+    "documentation": {
+      "tutorial": {
+        "title": "Quick tutorial",
+        "steps": [
+          "Hold PAGE and press MOD: the macro page opens and MOD lights blue.",
+          "Hold FUNC and push encoder A: the setup of macro A opens.",
+          "Turn encoder A to choose FLTR FREQ, and encoder E to set its depth, for example +64.00.",
+          "Press the trig keys of the tracks it should act on; they light red.",
+          "Press NO, then turn encoder A: the filter opens and closes on those tracks, and the kit stays as saved."
+        ]
+      },
+      "screenshots": [
+        "media/macro-page.png",
+        "media/macro-setup.png"
+      ],
+      "captureRecord": "media/capture.json"
+    }
   },
   "license": {
     "spdx": "GPL-2.0-or-later",
@@ -138,6 +160,38 @@
       "credit": "toonst",
       "license": "GPL-2.0-or-later",
       "source": "Original illustration for this module."
+    },
+    {
+      "path": "media/macro-page.png",
+      "kind": "screenshot",
+      "caption": "Hold PAGE and press MOD: the macro page, eight knobs on A-H (emulator capture).",
+      "alt": "Digitakt II screen with the header Macro Mode and eight empty macro knobs labelled A to H.",
+      "credit": "toonst documentation capture; Elektron interface",
+      "license": "LicenseRef-Digi-UI-Documentation",
+      "source": "original",
+      "capture": {
+        "type": "emulator",
+        "release": "1.17",
+        "moduleVersion": "0.1.0-experimental",
+        "imageSha256": "98f9d975e9ccc6caa8695df3014b710a8f41b188cd028952e1f16bbca0144e53",
+        "setup": "digikit zero_patched (ColdFire, DSP answering zeros); core-dt2 1.1 (elekloader 0df8409) + this module, built from digi_macro bc2295e. UI documentation only."
+      }
+    },
+    {
+      "path": "media/macro-setup.png",
+      "kind": "screenshot",
+      "caption": "FUNC + push an encoder: a macro's setup, here parameter 2 on SRC TUNE with its depth (emulator capture).",
+      "alt": "MODULATION SETUP MACRO MODE screen with four slots, the second showing SRC TUNE and a depth of 34.81.",
+      "credit": "toonst documentation capture; Elektron interface",
+      "license": "LicenseRef-Digi-UI-Documentation",
+      "source": "original",
+      "capture": {
+        "type": "emulator",
+        "release": "1.17",
+        "moduleVersion": "0.1.0-experimental",
+        "imageSha256": "98f9d975e9ccc6caa8695df3014b710a8f41b188cd028952e1f16bbca0144e53",
+        "setup": "digikit zero_patched (ColdFire, DSP answering zeros); core-dt2 1.1 (elekloader 0df8409) + this module, built from digi_macro bc2295e. UI documentation only."
+      }
     }
   ]
 }
