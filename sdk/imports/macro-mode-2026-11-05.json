@@ -5,13 +5,13 @@
   "date": "2026-11-05",
   "upstream": {
     "repository": "https://github.com/toonst/digi_macro",
-    "revision": "89abd8ebf9944a15e58124c50f7a34b892061e38",
+    "revision": "bc2295e057e6dae17fa44d3ed3a2575c8e848935",
     "path": ".",
     "license": "GPL-2.0-or-later"
   },
   "changes": [
-    "Macro mode's source imported unchanged from toonst/digi_macro at 89abd8e: the eleven files under src/, its LICENSE and its README (as upstream/README.md).",
-    "89abd8e moves the firmware locations from the manifest's compiler flags into src/mm_os.h and -fno-tree-loop-distribute-patterns into a pragma in mm.h, so build.json passes only -DMM_DT2 and -DMM_FEATURE_KITS. With m68k-linux-gnu GCC 13.3 every object's text, disassembly and relocations are identical to ac5c237's.",
+    "Macro mode's source imported unchanged from toonst/digi_macro at bc2295e: the eleven files under src/, its LICENSE and its README (as upstream/README.md).",
+    "Since ac5c237, digi_macro keeps the firmware locations in src/mm_os.h (the manifest passes only the device define) and the loop flag as a pragma in mm.h, so build.json passes only -DMM_DT2 and -DMM_FEATURE_KITS; and it includes core-dt2 1.1's header as elekloader#221 now names it, digitakt-mk2/core.h. With m68k-linux-gnu GCC 13.3 every Digitakt II object's text, disassembly and relocations are identical to ac5c237's.",
     "build.json is written from upstream's mods/dt2/mod.json and mods/dt2/kits.json: the same sources, subscriptions, contributions and claims. It has no stock sites: everything the module hooks is core 1.1's."
   ],
   "files": [
@@ -38,12 +38,12 @@
     {
       "from": "src/mm_glue.c",
       "to": "src/mm_glue.c",
-      "sha256": "fb99777a05bbfc1d064a74b830094a7457fe70b28984b64ffb06ef6d0bbbb07a"
+      "sha256": "33f00ba29e7f92011671358177e13bd4e9d3ea3486ce1b9754eb1c69c4e3b7d8"
     },
     {
       "from": "src/mm_kits.c",
       "to": "src/mm_kits.c",
-      "sha256": "add659da13720ef663764f4d452a9d7764655d13b4a100dcdc4d9c0aeead0fe6"
+      "sha256": "dab41e37b7220f5d5471be4daacfc68e921bcb871cd90d37f39b5af1fa627724"
     },
     {
       "from": "src/mm_kits.h",
@@ -78,7 +78,7 @@
     {
       "from": "README.md",
       "to": "upstream/README.md",
-      "sha256": "21ab5f6a8fb97070cb34e99f6407c4ed0937a4a8412999e93764edc07e75c2a4"
+      "sha256": "55b26923dea0009f25d813dc7c672d2f9767bdb2855f3028b42803319baedc9e"
     }
   ]
 }

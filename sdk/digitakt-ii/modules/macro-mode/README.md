@@ -58,11 +58,11 @@ Macro mode works as a page: the keys it does not use keep their stock function, 
 
 ## Tests and measurements
 
-See [TESTING.md](TESTING.md). In short: this folder's build has not been made or run yet. The same source, built with elekloader on core-dt2 1.1, passed digi_macro's host tests and its digikit emulator scenarios, and its author reports it running on a Digitakt II on OS 1.17.
+See [TESTING.md](TESTING.md). In short: this folder's build has not been made or run yet. Its source, built with elekloader on an earlier core-dt2 1.1, passed digi_macro's host tests and its digikit emulator scenarios, and its author reports it running on a Digitakt II on OS 1.17.
 
 ## Authorship and licences
 
-Macro mode is toonst's, from [toonst/digi_macro](https://github.com/toonst/digi_macro) at `89abd8e`, under GPL-2.0-or-later ([LICENSE](LICENSE)); its own README is in [upstream/](upstream/README.md). It runs on the Digitakt II base, which starts from irpina's core-dt2 (elekloader, GPL-2.0-or-later) with toonst's 1.1 additions. The firmware locations in `src/mm_os.h` are addresses only. This folder holds no firmware bytes.
+Macro mode is toonst's, from [toonst/digi_macro](https://github.com/toonst/digi_macro) at `bc2295e`, under GPL-2.0-or-later ([LICENSE](LICENSE)); its own README is in [upstream/](upstream/README.md). It runs on the Digitakt II base, which starts from irpina's core-dt2 (elekloader, GPL-2.0-or-later) with toonst's 1.1 additions. The firmware locations in `src/mm_os.h` are addresses only. This folder holds no firmware bytes.
 
 ## Screens and audio
 

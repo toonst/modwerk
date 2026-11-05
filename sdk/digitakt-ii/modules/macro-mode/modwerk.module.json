@@ -18,7 +18,7 @@
   ],
   "source": {
     "repository": "https://github.com/toonst/digi_macro",
-    "revision": "89abd8ebf9944a15e58124c50f7a34b892061e38",
+    "revision": "bc2295e057e6dae17fa44d3ed3a2575c8e848935",
     "path": "."
   },
   "presentation": {
@@ -122,12 +122,12 @@
   },
   "tests": {
     "report": "TESTING.md",
-    "summary": "Not yet built or run from this folder. The same source, built with elekloader against core-dt2 1.1, passed digi_macro's host tests and its digikit emulator scenarios, and its author reports it running on a Digitakt II on OS 1.17. See TESTING.md."
+    "summary": "Not yet built or run from this folder. Its source, built with elekloader on an earlier core-dt2 1.1, passed digi_macro's host tests and its digikit emulator scenarios, and its author reports it running on a Digitakt II on OS 1.17. See TESTING.md."
   },
   "license": {
     "spdx": "GPL-2.0-or-later",
     "file": "LICENSE",
-    "declaration": "The author's own source, from github.com/toonst/digi_macro at 89abd8e, under GPL-2.0-or-later. Firmware locations are addresses only; no firmware bytes."
+    "declaration": "The author's own source, from github.com/toonst/digi_macro at bc2295e, under GPL-2.0-or-later. Firmware locations are addresses only; no firmware bytes."
   },
   "media": [
     {
