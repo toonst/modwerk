@@ -1,0 +1,23 @@
+{
+  "schema": 1,
+  "kind": "elekloader-catalog",
+  "revision": "modwerk-base-digitakt-ii-2026-11-05",
+  "about": "Modwerk's Digitakt II base for OS 1.17, built by npm run machine:base -- digitakt-ii from core-dt2 1.1's source (elekloader#221 at 0df8409, sdk/imports/core-dt2-source-0df8409.json) with the reviewed toolchain (m68k-elf GCC 16.2.0, binutils 2.47), identified by its SHA-256 in sdk/machines/digitakt-ii/base-binding.json (f41b89cd). The site builds every Digitakt II set on it. Stock-free: each site names its stock bytes by length and SHA-256, and the build fills them from the owner's OS.",
+  "cores": [
+    {
+      "file": "modwerk-base-digitakt-ii-f41b89cd.elemod",
+      "sha256": "f41b89cd512badf6105b9446c0f5e461df1fafe7bfef0cee3bf93203f8b8fe88",
+      "id": "core",
+      "version": "1.1",
+      "device": "digitakt-mk2",
+      "os": "1.17",
+      "license": "GPL-2.0-or-later",
+      "source": {
+        "repo": "repeat98/modwerk",
+        "commit": "95e3d674f3998f7ecb139bacc7eb9345b27c7d7c",
+        "path": "sdk/imports/packages/modwerk-base-digitakt-ii/modwerk-base-digitakt-ii-f41b89cd.elemod"
+      }
+    }
+  ],
+  "mods": []
+}

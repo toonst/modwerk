@@ -128,8 +128,9 @@ def stock_sites(sites, stock):
 
 
 def variants(config):
-    """[(name, with add)] in base.json's order, the default first; a base without variants is one layout with add."""
-    return [(name, bool(variant['add'])) for name, variant in config.get('variants', {'base': {'add': True}}).items()]
+    """[(name, with add)] in base.json's order, the default first; a base without variants is one layout, with add
+    when it has one (a base that is the imported recipe alone, such as the Digitakt II's first, has none)."""
+    return [(name, bool(variant['add'])) for name, variant in config.get('variants', {'base': {'add': 'add' in config}}).items()]
 
 
 def stage(machine, config, root, sites=None, add=True):
