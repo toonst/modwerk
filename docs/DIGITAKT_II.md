@@ -2,14 +2,14 @@
 
 A plan for the owner to review, written 5 November 2026 against `main` at `dc5688ba`. It takes the Digitakt II (OS 1.17) from research to a machine with a library, downloads and the Octatrack's stack ([recipe](MACHINE_RECIPE.md)). Nothing here is built yet: each step below ships as its own pull request after the owner agrees to it. Where the machine stands today is in its guide ([sdk/machines/digitakt-ii/README.md](../sdk/machines/digitakt-ii/README.md)); when a step lands, that guide and the recipe's table change with it, and this plan loses the step.
 
-## Where it stands (5 November 2026)
+## Where it stands (5 November 2026, after step 1)
 
 | Piece | State | Where |
 | --- | --- | --- |
 | Firmware format, rebuild, boot, core | `done`, `done`, `started`, `done` in the profile | [machine.json](../sdk/machines/digitakt-ii/machine.json) |
-| Site build | Local preview only: the kit 0.7.0 worker links toonst's core 1.0 with the two perform mods from the owner's OS 1.17; downloads off (`DIGI_DOWNLOADS_ENABLED['digitakt-ii'] === false`) | [machine-build.ts](../src/engine/elekloader/machine-build.ts), [elekloader-digitakt2-perform-v1.0.json](../sdk/imports/elekloader-digitakt2-perform-v1.0.json) |
-| Core contract | Interface 1.1: core 1.0's six UI events, plus core 1.1's entries marked `since` 1.1 (proposed); the machine's core stays 1.0, so `module.platform.core` refuses a module that needs 1.1 | [core-profile/interface.json](../sdk/digitakt-ii/core-profile/interface.json) |
-| Base | Core 1.1's source copied unchanged (#1055, 30 October; refreshed to #221's rebased `0df8409` here); no `base.json`, no binding, nothing built from it | [elekloader/](../sdk/machines/digitakt-ii/elekloader/README.md) |
+| Site build | Local preview: the kit 0.7.0 worker links Modwerk's base with the selected mods from the owner's OS 1.17; downloads off (`DIGI_DOWNLOADS_ENABLED['digitakt-ii'] === false`) | [machine-build.ts](../src/engine/elekloader/machine-build.ts), [elekloader-digitakt2-perform-v1.0.json](../sdk/imports/elekloader-digitakt2-perform-v1.0.json) |
+| Core contract | Interface 1.1: core 1.0's six UI events plus core 1.1's entries (marked `since` 1.1); the machine's core is 1.1 | [core-profile/interface.json](../sdk/digitakt-ii/core-profile/interface.json) |
+| Base | Built: core 1.1's source (#221's `0df8409`) by `npm run machine:base`, identity `f41b89cd`; the site builds every Digitakt II set on it | [elekloader/](../sdk/machines/digitakt-ii/elekloader/README.md) |
 | Library | Empty. Mute Latch (crisp909, #1160) is the first module under review; the owner asked it to move to `sdk/digitakt-ii/modules/mute-latch/` with a pinned package, and to take the key LEDs from core 1.1's `ev_key_leds` rather than its own patch of the site core 1.1 owns | [modules/](../sdk/digitakt-ii/modules/README.md) |
 | USB link, loader, base updates, MCP tools, machine page | Not started | [recipe](MACHINE_RECIPE.md#the-pieces) |
 | Emulator | digikit (toonst's, AGPL-3.0-or-later): ColdFire and SHARC, OS 1.17; captures only, never hardware evidence | [digikit](https://github.com/toonst/digikit) |
@@ -41,17 +41,21 @@ Open, for the owner (each is asked again in the pull request that needs the answ
 
 Each step is one pull request with its own changelog entry and, where something is built, a verification record. The owner reviews every base, link, loader and page. Before each, claim its items on the [agent board](AGENT_BOARD.md); `pr:ready` claims what a branch adds. #1055's proposed entries (`digitakt-ii/events/6`, `events/7`, `tables/1`, `tables/2`) have not been claimed yet.
 
-### 1. The base builds (core 1.1 ships)
+### 1. The base builds (core 1.1 ships): done
 
-Payoff: every module the musician sees on this machine needs it. Macro mode and Mute Latch's LEDs wait for it. Confidence: high for the build, since the Rytm's route already exists. Medium to high for hardware: core 1.0 has run on a unit with a mod on its key events, and core 1.1 (`0df8409`, built by elekloader) with macro mode passed digikit's emulator scenarios and, by its author's report, works on a Digitakt II (5 November). The base's own build has not run yet.
+Done on 5 November 2026, in the pull request that carries this plan:
 
-- `sdk/machines/digitakt-ii/elekloader/base.json`: `core: "core-dt2"`, `include: sdk/machines/digitakt-ii/include`, `os: "1.17"`, the reviewed toolchain (m68k-elf GCC 16.2.0, binutils 2.47), the reference and keeps from open item 2, and the variants from item 5. No `add` yet: the first base is core 1.1 as copied.
-- `base-binding.json`, written by `npm run machine:base -- digitakt-ii --stock …/Digitakt_II_OS1.17.syx --write` from the developer's own OS file, in the toolchain image. The packages go to `sdk/imports/packages/modwerk-base-digitakt-ii/` and `vendor/elekloader/catalog/`, pinned in `sdk/imports/elekloader-modwerk-base-digitakt-ii-<date>.json`, as the Rytm's base is.
-- `machine-build.ts`: a `MODWERK_BASES['digitakt-ii']` entry, so a set builds on the base and not on toonst's core 1.0 record. Keep the 1.0 record as the reference `machine:base` checks against.
-- The profile: `sdk.core.version` to `1.1`; the `Core image` budget from the binding's sections; a `Kit data` budget (item 3); core 1.1's per-event subscription count stays 4. `interface.json` drops the `since` markers and its status line; the guide's "Proposed for core 1.1" becomes "Core hooks".
-- Check that the two perform mods still link on the base. They need core 1.0, and core 1.1 keeps all of it. On 5 November they linked on core 1.1 (`0df8409`, built by elekloader) through the site's builder path, with the owner's OS, alone and beside macro mode. Check it again on the base's own build.
-- Tests: `machine-build.test.ts` and `digi-build.test.ts` plan a set on the base. `sdk/tests/test_machine_base.py` covers the new binding as it does the Rytm's. The `elemod-source` job rebuilds the base.
-- Verification record `docs/verification/<date>-digitakt-ii-base.md`: the identities, `.run` and `.bss` sizes per variant, the reference check, and a digikit emulator boot of the base alone and with each perform mod. Then a unit boot of each variant, as the person who ran it reports it, with the stock `.syx` restored after.
+- **Recipe:** [base.json](../sdk/machines/digitakt-ii/elekloader/base.json) is core-dt2 1.1's source as copied, with the include folder, OS 1.17 and the reviewed toolchain. It has no `add` and no variants yet: open item 5 stays the owner's call.
+- **Reference check:** the base is checked against core-dt2 1.0's release (item 2) and keeps every 1.0 site, export, import, table and contribution.
+- **Identity:** [base-binding.json](../sdk/machines/digitakt-ii/base-binding.json) records `f41b89cd`. toonst built it from their own OS file with m68k-elf GCC 16.2.0 and binutils 2.47.
+- **Package:** published in `sdk/imports/packages/modwerk-base-digitakt-ii/` and pinned in `sdk/imports/elekloader-modwerk-base-digitakt-ii-2026-11-05.json`, as the Rytm's base is.
+- **Site:** `machine-build.ts` builds every Digitakt II set on the base (`MODWERK_BASES['digitakt-ii']`). The profile's core is 1.1, so a module that uses a 1.1 entry validates. The core 1.0 record stays, as the release the base is checked against.
+- **Record:** [docs/verification/2026-11-05-digitakt-ii-base.md](verification/2026-11-05-digitakt-ii-base.md) has the checks, the links and the emulator run.
+
+Left for later:
+- a `Kit data` budget the planner enforces (item 3);
+- the variants (item 5);
+- a unit boot of the base's own package, reported by whoever runs it, with the stock `.syx` restored after.
 
 ### 2. The first modules
 
@@ -99,7 +103,7 @@ The Digitakt II's audio runs on its SHARC DSP, and core 1.1 has no audio hook: `
 ## Order
 
 1. The owner reviews this plan and answers the open items, or defers them to the pull request named for each.
-2. Step 1 (base), with items 2 and 5.
+2. Step 1 (base): done (5 November). Item 2 is settled by it; item 5 stays open.
 3. Step 2's tool fixes (`module:doctor`, captures), then the modules, one pull request each, macro mode with item 3 and 4.
 4. Step 3 (downloads, the owner's switch).
 5. Step 4 (link, loader, MCP), step 5 (page), each with its own plan section updated first.

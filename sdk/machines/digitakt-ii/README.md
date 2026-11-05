@@ -1,16 +1,16 @@
 # Digitakt II SDK
 
-Modwerk's Digitakt II path is experimental and targets stock OS 1.17 only. It uses elekloader kit 0.5.0 and the `core-dt2` 1.0 hook bus. The machine remains in research: builds can be checked locally, but downloads stay disabled until the exact Modwerk packages are qualified and reviewed.
+Modwerk's Digitakt II path is experimental and targets stock OS 1.17 only. The site builds every Digitakt II set on Modwerk's own base, core-dt2 1.1's source built by `npm run machine:base`, with elekloader kit 0.7.0. The machine remains in research: builds can be checked locally, but downloads stay disabled until the exact Modwerk packages are qualified and reviewed.
 
 ## Modwerk stack
 
-Today the core is toonst's digitakt2-perform 1.0, and builds stay local. The Digitakt II is to get the Octatrack's stack ([recipe](../../../docs/MACHINE_RECIPE.md)): a Modwerk base started from that core's source, which takes the hooks mods propose, then a USB link, the loader's glue, base updates over USB, the MCP's device tools and the machine page.
+The Digitakt II is getting the Octatrack's stack ([recipe](../../../docs/MACHINE_RECIPE.md)): a Modwerk base that takes the hooks mods propose, then a USB link, the loader's glue, base updates over USB, the MCP's device tools and the machine page.
 
-The base has started with its source (29 October 2026): core 1.1, copied unchanged into [elekloader/](elekloader/README.md) with its provenance in `sdk/imports/`. Nothing builds from it yet, and the site still links core 1.0. Its first additions, proposed below, are what a performance mode needs: per-frame parameter values, key LEDs and per-project and per-kit data. The USB link, the loader, base updates, the device tools and the machine page are not started. The steps from here, in order, and the decisions they need are in the [Digitakt II plan](../../../docs/DIGITAKT_II.md).
+The base is built (5 November 2026): core-dt2 1.1's source (elekloader#221, `0df8409`), copied unchanged into [elekloader/](elekloader/README.md) with its provenance in `sdk/imports/`, built by `npm run machine:base -- digitakt-ii` with the reviewed toolchain and identified in [base-binding.json](base-binding.json) (`f41b89cd`). It keeps everything core 1.0 (toonst's digitakt2-perform 1.0, the core the site built with before) had, and adds what a performance mode needs: per-frame parameter values, key LEDs, per-project and per-kit data and value rows. The USB link, the loader, base updates, the device tools and the machine page are not started. The steps from here, in order, and the decisions they need are in the [Digitakt II plan](../../../docs/DIGITAKT_II.md).
 
 ## Core hooks
 
-The core is toonst's digitakt2-perform core 1.0 (GPL-2.0-or-later), pinned by hash in [sdk/imports/elekloader-digitakt2-perform-v1.0.json](../../imports/elekloader-digitakt2-perform-v1.0.json); its contract is [core-profile/interface.json](../../digitakt-ii/core-profile/interface.json). It exposes the UI hooks below and nothing of the sequencer, the LFOs or the voices. A mod that needs one of those sites proposes a core hook first and never patches the site itself ([propose a hook](../../../docs/module-guides/README.md#propose-a-hook-on-the-digitakt-digitone-or-digitakt-ii)); the hook goes into the Digitakt II's Modwerk base ([Modwerk stack](#modwerk-stack)).
+The core is Modwerk's base, core-dt2 1.1 (GPL-2.0-or-later; irpina's core with toonst's 1.1 additions), pinned by hash in [sdk/imports/elekloader-modwerk-base-digitakt-ii-2026-11-05.json](../../imports/elekloader-modwerk-base-digitakt-ii-2026-11-05.json); its contract is [core-profile/interface.json](../../digitakt-ii/core-profile/interface.json). It exposes the UI hooks below and nothing of the sequencer, the LFOs or the voices. A mod that needs one of those sites proposes a core hook first and never patches the site itself ([propose a hook](../../../docs/module-guides/README.md#propose-a-hook-on-the-digitakt-digitone-or-digitakt-ii)); the hook goes into the Digitakt II's Modwerk base ([Modwerk stack](#modwerk-stack)).
 
 The core subscribes mods to these ColdFire/UI hooks:
 
@@ -23,9 +23,9 @@ The core subscribes mods to these ColdFire/UI hooks:
 | `ev_settings` | `void f(void *menu)` | Add rows while the SETTINGS menu is built. |
 | `ev_personalize` | `void f(void *menu)` | Add rows while PERSONALIZE is built. |
 
-### Proposed for core 1.1
+### Added in core 1.1
 
-These are in [core-profile/interface.json](../../digitakt-ii/core-profile/interface.json) marked `since` 1.1, and in the base source above. They are not in the core the site builds with (1.0), so a module that needs one waits for the base ([propose a hook](../../../docs/module-guides/README.md#propose-a-hook-on-the-digitakt-digitone-or-digitakt-ii)).
+These are in [core-profile/interface.json](../../digitakt-ii/core-profile/interface.json) marked `since` 1.1. A module that uses one sets `platform.core` to `"1.1"`.
 
 | Entry | What | Handler or record |
 | --- | --- | --- |
@@ -35,7 +35,7 @@ These are in [core-profile/interface.json](../../digitakt-ii/core-profile/interf
 | `core_kitdata` | a mod's block per kit (128), after each kit record's end mark; saved with the project and SAVE KIT and carried through pattern copy and paste, PASTE KIT and undo | table of `core_kitdata_t {tag[4], size, data, changed}`, four entries; claim `kitdata:<tag>` |
 | `core_addvalue`, `core_kit_on`, `fw_led_set` | a value row for PERSONALIZE or SETTINGS drawn like LED INTENSITY, the kit on, and the LED setter for `ev_key_leds` | `digitakt-mk2/core.h` |
 
-By the core's documentation (emulator-tested, not hardware-tested), both data areas hold bytes the stock OS writes as zeros and never reads, so a project saved with mods loads on the stock OS, which keeps them when it saves a project it loaded. Core writes them only over zeros or its own data and counts anything else in `core_store_conflicts`. **A kit record has room for 191 bytes of kit data in all** (`core_kitdata_room()`), shared by every mod's block. One mod with a 191-byte block takes all of it and leaves any other kit-data mod out, so per-kit state that several modules will want belongs to the base, as one record per module in a table the base owns ([recipe](../../../docs/MACHINE_RECIPE.md#rules)), not to the first module that asks for the room.
+By the core's documentation, both data areas hold bytes the stock OS writes as zeros and never reads, so a project saved with mods loads on the stock OS, which keeps them when it saves a project it loaded. Core writes them only over zeros or its own data and counts anything else in `core_store_conflicts`. **A kit record has room for 191 bytes of kit data in all** (`core_kitdata_room()`), shared by every mod's block. One mod with a 191-byte block takes all of it and leaves any other kit-data mod out, so per-kit state that several modules will want belongs to the base, as one record per module in a table the base owns ([recipe](../../../docs/MACHINE_RECIPE.md#rules)), not to the first module that asks for the room.
 
 The Digitakt II core does not start DTIM0 and exposes no audio-render hook. Audio is rendered by the separate SHARC DSP; these hooks are not sample-accurate.
 
@@ -43,15 +43,22 @@ The Digitakt II core does not start DTIM0 and exposes no audio-render hook. Audi
 
 - Shared DDR: `0x47F00000–0x47F40000` (262,144 bytes for core and linked mods).
 - Fast-code SRAM: `0x8000F100–0x80010000` (3,840 bytes). The core copies `.fast` code on its first UI tick.
-- Core 1.0 footprint: 480 bytes `.run` plus 20 bytes `.bss`; the linker remains authoritative for combined sizes and overlap.
-- Each hook collection has four entries in core 1.0. `core_fast` has sixteen copy-table entries.
+- The base's footprint: 3,708 bytes `.run` plus 1,808 bytes `.bss` (`f41b89cd`); the linker remains authoritative for combined sizes and overlap.
+- Each hook collection and table has four entries. `core_fast` has sixteen copy-table entries.
 
 ## Build and recovery
 
-Use the exact owner-supplied `Digitakt_II_OS1.17.syx`; the builder recognizes firmware by hash and keeps the bootstrap and updater sections unchanged. The source toolchain is m68k-elf GCC/binutils. From an elekloader checkout, build packages with `ELEKLOADER_CROSS=m68k-elf- python3 -m elekloader.sdk.build <module-folder> --stock <stock.syx>` and link them with `python3 -m elekloader.patch`.
+Use the exact owner-supplied `Digitakt_II_OS1.17.syx`; the builder recognizes firmware by hash and keeps the bootstrap and updater sections unchanged. The toolchain is m68k-elf GCC 16.2.0 and binutils 2.47 (`sdk/build/Dockerfile`, or Homebrew's `m68k-elf-gcc` at those versions; `machine:base` refuses any other). Rebuild and check the base with:
+
+```sh
+npm run upstream:tools
+npm run machine:base -- digitakt-ii --stock /private/Digitakt_II_OS1.17.syx
+```
+
+The site's builder path (the vendored kit) builds and seals a set. Modwerk's own writer behind `scripts/link-image.mjs` does not seal a Digitakt II OS yet, so a local test image comes from the site or from elekloader.
 
 A normal OS update uses Elektron Transfer. For recovery, hold FUNC while powering on, choose TRIG 4 (OS UPGRADE), then send the owner's stock `.syx` over MIDI DIN; this recovery mode does not use USB. Local parsing and emulator checks do not guarantee hardware safety. Do not flash an unqualified build.
 
 ## Status
 
-The upstream core and author packages have been parsed, linted, and built against OS 1.17. Modwerk's browser engine and user-facing modules are still under integration. No module in this SDK is approved or qualified for publication yet.
+The base builds with the reviewed toolchain and passes its check against core 1.0 (`machine:base`). Core 1.1's source with macro mode passed digi_macro's digikit emulator scenarios and, by its author's report, works on a Digitakt II (5 November 2026); the base's own package has not run on a unit yet. No module in this SDK is approved or qualified for publication yet.

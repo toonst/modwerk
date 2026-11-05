@@ -1,0 +1,1 @@
+Digitakt II: the configuration page builds every Digitakt II set on Modwerk's own base, core-dt2 1.1's source built with the reviewed toolchain (identity f41b89cd), in place of toonst's core 1.0. It keeps everything 1.0 had, so the perform mods link as before, and it adds each frame's parameter values, key LEDs, the mods' project and kit data and value rows. Downloads stay off.

@@ -4,6 +4,7 @@ import CATALOG_JSON from '../../../vendor/elekloader/catalog/catalog.json' with 
 import KIT from '../../../vendor/elekloader/kit/kit.json' with { type: 'json' }
 import RYTM_BASE from '../../../sdk/machines/analog-rytm-mkii/base-binding.json' with { type: 'json' }
 import RYTM_FX_IDS from '../../../sdk/machines/analog-rytm-mkii/fx-ids.json' with { type: 'json' }
+import DT2_BASE from '../../../sdk/machines/digitakt-ii/base-binding.json' with { type: 'json' }
 import {
   buildLogText as kitBuildLogText, createBuilder, parseCatalog, planBuild as kitPlanBuild, prepare, releases,
   type Builder, type Catalog, type Plan, type Prepared,
@@ -34,6 +35,12 @@ const MODWERK_BASES: Partial<Record<ElekloaderMachine, { variants: Record<string
   'analog-rytm-mkii': {
     variants: RYTM_BASE.variants,
     variant: moduleIds => moduleIds.some(id => Object.values(RYTM_FX_IDS.ids).includes(id)) ? 'send-bus' : 'plain',
+  },
+  // One layout, core-dt2 1.1's source (sdk/machines/digitakt-ii/elekloader/base.json): every set builds on it. The
+  // catalogue's core-dt2 1.0 record stays only as the release machine:base checks the base against.
+  'digitakt-ii': {
+    variants: { base: DT2_BASE.identity },
+    variant: () => 'base',
   },
 }
 /** The Modwerk base variant a selection builds on, or undefined for a machine that builds on a catalogue core. */
