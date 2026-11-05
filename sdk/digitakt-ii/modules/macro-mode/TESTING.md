@@ -9,7 +9,7 @@ Not built or run yet. It needs the Digitakt II base with core 1.1, which Modwerk
 | Source-only package, pinned toolchain (`scripts/build-elemod-isolated.sh`) | Not run |
 | Linked with the base on stock OS 1.17 by the site's builder | Not run: there is no base build yet. Linked with a local core 1.1 instead (below) |
 | digikit emulator: boot, the macro page, the setup, a project round trip | Passed on an image identical to the site builder's, with a local core 1.1 (below) |
-| Unit: the same build on a Digitakt II, OS 1.17 | Not run |
+| Unit: the same build on a Digitakt II, OS 1.17 | As reported by toonst (5 November 2026): digi_macro's `tools/build.sh` build on core-dt2 1.1 `0df8409`, the same sources as this folder, works on a Digitakt II, OS 1.17. Not this folder's pinned-toolchain package, which is not built yet |
 | Memory and frame-interrupt load | Not measured. The link takes 58,200 of the 262,144-byte mod area with core 1.1 |
 
 What was checked here (5 November 2026): the sources are digi_macro's at `bc2295e`. With m68k-linux-gnu GCC 13.3 they compile, for the Digitakt II with the kits feature, to 19,517 bytes of text and 33,575 of bss with no undefined symbol but core's. Every object's text, disassembly and relocations are identical to those of the commit before (`ac5c237`), whose manifest passed the firmware locations as compiler flags. That is not the reviewed toolchain, and nothing ran.

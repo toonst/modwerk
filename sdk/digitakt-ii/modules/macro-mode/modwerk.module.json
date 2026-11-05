@@ -127,7 +127,7 @@
   },
   "tests": {
     "report": "TESTING.md",
-    "summary": "Emulator: this folder's build (local GCC 13.3, a local core-dt2 1.1, through the site's builder path) passed digi_macro's digikit scenarios on OS 1.17, 94 + 32 + 12 checks. Its author reports the module running on a Digitakt II with an earlier core. Not built in the pinned toolchain or run on a unit yet. See TESTING.md.",
+    "summary": "Emulator: this folder's build on a local core-dt2 1.1 passed digi_macro's digikit scenarios on OS 1.17 (94 + 32 + 12 checks). Unit: digi_macro's build of the same sources on that core works on a Digitakt II, as toonst reports. Not yet built in the pinned toolchain. See TESTING.md.",
     "documentation": {
       "tutorial": {
         "title": "Quick tutorial",

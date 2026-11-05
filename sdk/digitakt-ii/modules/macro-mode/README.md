@@ -60,7 +60,7 @@ Macro mode works as a page: the keys it does not use keep their stock function, 
 
 ## Tests and measurements
 
-See [TESTING.md](TESTING.md). In short: this folder's build, linked on core-dt2 1.1 through the site's builder path (a local build, not the pinned toolchain), passed digi_macro's digikit emulator scenarios on OS 1.17: 94, 32 and 12 checks. Its author reports the module running on a Digitakt II with an earlier core. It has not run on a unit from this folder.
+See [TESTING.md](TESTING.md). In short: this folder's build, linked on core-dt2 1.1 through the site's builder path (a local build, not the pinned toolchain), passed digi_macro's digikit emulator scenarios on OS 1.17: 94, 32 and 12 checks. Its author reports digi_macro's build of the same sources, on the same core, working on a Digitakt II (5 November 2026). The package built from this folder in the pinned toolchain has not run on a unit yet.
 
 ## Authorship and licences
 
