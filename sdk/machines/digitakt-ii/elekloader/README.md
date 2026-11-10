@@ -21,11 +21,11 @@ Core 1.1 keeps the six events and every site of core 1.0 and adds, in new code a
 The entries are proposed in [core-profile/interface.json](../../../digitakt-ii/core-profile/interface.json) (marked
 `since` 1.1), with each new site's address, length and SHA-256 guard.
 
-## Local base candidate
+## The base
 
 [base.json](base.json) stages the imported sources and adds the proposed [sequencer pitch hook](modwerk/README.md).
-The recipe checks that the candidate retains the stock sites and interface entries of the released `core-1.0.elemod`.
-It pins the same compiler and assembler as `sdk/build/Dockerfile`. To reproduce the local candidate, build with
+The recipe checks that the base retains the stock sites and interface entries of the released `core-1.0.elemod`.
+It pins the same compiler and assembler as `sdk/build/Dockerfile`. To reproduce it, build with
 that toolchain, the kit-pinned Elekloader SDK and your local copy of the exact stock OS:
 
 ```sh
@@ -37,11 +37,13 @@ Two isolated builds with GCC 16.2.0 and binutils 2.47 produced byte-identical pa
 
 ## Release status
 
-- **The site still builds with core 1.0.** The machine's core version stays 1.0 until the base ships, so a module that
-  needs a 1.1 entry cannot validate yet (`module.platform.core`).
+- **The site builds on this base.** Its package is published in `sdk/imports/packages/modwerk-base-digitakt-ii/` and
+  pinned in `sdk/imports/elekloader-modwerk-base-digitakt-ii-2026-11-10.json`; `machine-build.ts` takes it for every
+  Digitakt II set, and the machine's core version is 1.1. Downloads stay off. A new identity is published the same
+  way: the package, its record, and `npm run elekloader:update -- --overlay` for the catalogue's copy.
 - **Upstream 1.1 source.** `3d7c2e3` is the first commit of toonst's
   [elekloader#221](https://github.com/elekloader/elekloader/pull/221), which is open and has moved since. If it lands
-  changed, elekloader's core-dt2 1.1 and this source differ: take the source again from its merged release before the
-  base ships. Changes to core-dt2 itself go to elekloader ([contributing](../../../../CONTRIBUTING.md#elekloader-mods-and-cores)).
+  changed, elekloader's core-dt2 1.1 and this source differ: take the source again from its merged release and
+  rebuild the base (a new identity). Changes to core-dt2 itself go to elekloader ([contributing](../../../../CONTRIBUTING.md#elekloader-mods-and-cores)).
 - **Hardware.** By their author's report, core 1.1's additions have run in digikit's emulator only, and a unit has
   run core 1.0 with a mod on its key events. Modwerk has qualified none of it on hardware.

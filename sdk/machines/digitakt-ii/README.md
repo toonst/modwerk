@@ -1,16 +1,16 @@
 # Digitakt II SDK
 
-Modwerk's Digitakt II path is experimental and targets stock OS 1.17 only. It uses elekloader kit 0.5.0 and the `core-dt2` 1.0 hook bus. The machine remains in research: builds can be checked locally, but downloads stay disabled until the exact Modwerk packages are qualified and reviewed.
+Modwerk's Digitakt II path is experimental and targets stock OS 1.17 only. The site builds every Digitakt II set on Modwerk's own base ([base-binding.json](base-binding.json)), with the vendored elekloader kit. The machine remains in research: builds can be checked locally, but downloads stay disabled until the exact Modwerk packages are qualified and reviewed.
 
 ## Modwerk stack
 
-Today the core is toonst's digitakt2-perform 1.0, and builds stay local. The Digitakt II is to get the Octatrack's stack ([recipe](../../../docs/MACHINE_RECIPE.md)): a Modwerk base started from that core's source, which takes the hooks mods propose, then a USB link, the loader's glue, base updates over USB, the MCP's device tools and the machine page.
+Today the core is Modwerk's base, and builds stay local. The Digitakt II is to get the Octatrack's stack ([recipe](../../../docs/MACHINE_RECIPE.md)): a Modwerk base started from the core's source, which takes the hooks mods propose, then a USB link, the loader's glue, base updates over USB, the MCP's device tools and the machine page.
 
-The base has started with its source (29 October 2026): core 1.1, copied unchanged into [elekloader/](elekloader/README.md) with its provenance in `sdk/imports/`. A local candidate links these sources with the proposed audio sequencer pitch hook for emulator testing. The site still links core 1.0. The proposed 1.1 additions below give performance mods per-frame parameter values, key LEDs and per-project and per-kit data. The USB link, the loader, base updates, the device tools and the machine page are not started.
+The base has started with its source (29 October 2026): core 1.1, copied unchanged into [elekloader/](elekloader/README.md) with its provenance in `sdk/imports/`. The [base](elekloader/README.md) links these sources with Modwerk's audio sequencer hooks and the active project's generation, and the site builds every set on its package (`ce3e5488`, 10 November 2026). The 1.1 additions below give performance mods per-frame parameter values, key LEDs and per-project and per-kit data. The USB link, the loader, base updates, the device tools and the machine page are not started.
 
 ## Core hooks
 
-The core is toonst's digitakt2-perform core 1.0 (GPL-2.0-or-later), pinned by hash in [sdk/imports/elekloader-digitakt2-perform-v1.0.json](../../imports/elekloader-digitakt2-perform-v1.0.json); its contract is [core-profile/interface.json](../../digitakt-ii/core-profile/interface.json). It exposes the UI hooks below and nothing of the sequencer, the LFOs or the voices. A mod that needs one of those sites proposes a core hook first and never patches the site itself ([propose a hook](../../../docs/module-guides/README.md#propose-a-hook-on-the-digitakt-digitone-or-digitakt-ii)); the hook goes into the Digitakt II's Modwerk base ([Modwerk stack](#modwerk-stack)).
+The core is Modwerk's base, core-dt2 1.1 (GPL-2.0-or-later; irpina's core with toonst's 1.1 additions) with Modwerk's own sources, pinned by hash in [sdk/imports/elekloader-modwerk-base-digitakt-ii-2026-11-10.json](../../imports/elekloader-modwerk-base-digitakt-ii-2026-11-10.json); its contract is [core-profile/interface.json](../../digitakt-ii/core-profile/interface.json). It exposes the UI hooks below and nothing of the sequencer, the LFOs or the voices. A mod that needs one of those sites proposes a core hook first and never patches the site itself ([propose a hook](../../../docs/module-guides/README.md#propose-a-hook-on-the-digitakt-digitone-or-digitakt-ii)); the hook goes into the Digitakt II's Modwerk base ([Modwerk stack](#modwerk-stack)).
 
 The core subscribes mods to these ColdFire/UI hooks:
 
@@ -23,9 +23,9 @@ The core subscribes mods to these ColdFire/UI hooks:
 | `ev_settings` | `void f(void *menu)` | Add rows while the SETTINGS menu is built. |
 | `ev_personalize` | `void f(void *menu)` | Add rows while PERSONALIZE is built. |
 
-### Proposed for core 1.1
+### Added in core 1.1
 
-These are in [core-profile/interface.json](../../digitakt-ii/core-profile/interface.json) marked `since` 1.1, and in the base source above. They are not in the core the site builds with (1.0), so a module that needs one waits for the base ([propose a hook](../../../docs/module-guides/README.md#propose-a-hook-on-the-digitakt-digitone-or-digitakt-ii)).
+These are in [core-profile/interface.json](../../digitakt-ii/core-profile/interface.json) marked `since` 1.1. A module that uses one sets `platform.core` to `"1.1"`.
 
 | Entry | What | Handler or record |
 | --- | --- | --- |
@@ -52,8 +52,8 @@ No Modwerk build writes SHARC code yet. The first base or module that does follo
 
 - Shared DDR: `0x47F00000–0x47F40000` (262,144 bytes for core and linked mods).
 - Fast-code SRAM: `0x8000F100–0x80010000` (3,840 bytes). The core copies `.fast` code on its first UI tick.
-- Core 1.0 footprint: 480 bytes `.run` plus 20 bytes `.bss`; the linker remains authoritative for combined sizes and overlap.
-- Each hook collection has four entries in core 1.0. `core_fast` has sixteen copy-table entries.
+- The base's footprint: 7,327 bytes `.run` plus 3,576 bytes `.bss` (`ce3e5488`); the linker remains authoritative for combined sizes and overlap.
+- Each hook collection and table has four entries. `core_fast` has sixteen copy-table entries.
 
 ## Build and recovery
 
@@ -63,4 +63,4 @@ A normal OS update uses Elektron Transfer. For recovery, hold FUNC while powerin
 
 ## Status
 
-The upstream core and author packages have been parsed, linted, and built against OS 1.17. Modwerk's browser engine and user-facing modules are still under integration. No module in this SDK is approved or qualified for publication yet.
+The base reproduces its recorded identity with the reviewed toolchain, and the site's builder links it alone and with the perform mods from the owner's OS 1.17; each of those builds passes the preflight above ([verification record](../../../docs/verification/2026-11-10-digitakt-ii-base-on-the-site.md)). No module in this SDK is approved or qualified for publication yet.

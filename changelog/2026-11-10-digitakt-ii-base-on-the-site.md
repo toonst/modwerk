@@ -1,0 +1,1 @@
+Digitakt II: the configuration page builds every Digitakt II set on Modwerk's own base (identity ce3e5488), in place of toonst's core 1.0. The base keeps everything 1.0 had, so the perform mods link as before, and a module can now use core 1.1's frame values, key LEDs, project and kit data and value rows, and the base's sequencer hooks. Downloads stay off.

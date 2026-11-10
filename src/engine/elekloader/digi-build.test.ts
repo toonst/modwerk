@@ -6,9 +6,11 @@ import type { Catalog } from '../../../vendor/elekloader/kit/src/kit/catalog'
 import { DIGI_DOWNLOADS_ENABLED, digiDownloadsEnabled } from './protocol'
 import { baseVariant } from './machine-build'
 import RYTM_BASE from '../../../sdk/machines/analog-rytm-mkii/base-binding.json'
+import DT2_BASE from '../../../sdk/machines/digitakt-ii/base-binding.json'
 
 const PLAIN = 'modwerk-base-analog-rytm-mkii-' + RYTM_BASE.variants.plain.slice(0, 8) + '.elemod'
 const SEND_BUS = 'modwerk-base-analog-rytm-mkii-' + RYTM_BASE.variants['send-bus'].slice(0, 8) + '.elemod'
+const DT2 = 'modwerk-base-digitakt-ii-' + DT2_BASE.identity.slice(0, 8) + '.elemod'
 
 describe('the vendored elekloader catalog', () => {
   it('pins a core for every supported Digitakt and Digitone release', () => {
@@ -23,9 +25,12 @@ describe('the vendored elekloader catalog', () => {
     // Saved backups name it; npm run elekloader:check verifies the catalog is the upstream catalog plus the module records.
     expect(BUILDER_CATALOG.revision).toMatch(/^[0-9a-f]{64}$/)
   })
-  it('plans the released Digitakt II mods only for OS 1.17 with their DTII core', () => {
+  it('plans the released Digitakt II mods only for OS 1.17, on Modwerk\'s Digitakt II base', () => {
+    expect(planBuild('digitakt-ii', '1.17', [])).toMatchObject({
+      core: { file: DT2, sha256: DT2_BASE.identity, device: 'digitakt-mk2', os: '1.17', version: '1.1' },
+    })
     expect(planBuild('digitakt-ii', '1.17', ['perform-direct', 'perform-levels'])).toMatchObject({
-      core: { file: 'core-1.0.elemod', device: 'digitakt-mk2', os: '1.17' },
+      core: { file: DT2, sha256: DT2_BASE.identity, device: 'digitakt-mk2', os: '1.17' },
       mods: [
         { id: 'perform-direct', file: 'perform-direct-1.0.elemod', device: 'digitakt-mk2', os: '1.17' },
         { id: 'perform-levels', file: 'perform-levels-1.0.elemod', device: 'digitakt-mk2', os: '1.17' },
@@ -37,12 +42,15 @@ describe('the vendored elekloader catalog', () => {
   it('reports modules without a file for the chosen release', () => {
     expect(planBuild('digitakt', '1.53', ['fx-track', 'digihealth'])).toMatchObject({ missing: ['fx-track'], mods: [{ id: 'digihealth', os: '1.53' }] })
   })
-  it('plans Digitakt II OS 1.17 using its own core and mod pins', () => {
+  it('plans Digitakt II OS 1.17 on the base\'s identity, not on another core of the device', () => {
     const catalog: Catalog = {
       ...BUILDER_CATALOG,
-      cores: [...BUILDER_CATALOG.cores, {
+      cores: [...BUILDER_CATALOG.cores.filter(core => core.device !== 'digitakt-mk2'), {
         file: 'core-1.0.elemod', sha256: 'a'.repeat(64), id: 'core', version: '1.0', device: 'digitakt-mk2', os: '1.17',
         license: 'GPL-2.0-or-later', source: { repo: 'toonst/digitakt2-perform', tag: 'v1.0' },
+      }, {
+        file: DT2, sha256: DT2_BASE.identity, id: 'core', version: '1.1', device: 'digitakt-mk2', os: '1.17',
+        license: 'GPL-2.0-or-later', source: { repo: 'repeat98/modwerk', commit: '0'.repeat(40), path: 'sdk/imports/packages/modwerk-base-digitakt-ii/' + DT2 },
       }],
       mods: [...BUILDER_CATALOG.mods, {
         file: 'perform-direct-1.0.elemod', sha256: 'b'.repeat(64), id: 'perform-direct', version: '1.0', device: 'digitakt-mk2', os: '1.17',
@@ -51,7 +59,7 @@ describe('the vendored elekloader catalog', () => {
     }
 
     expect(planBuild('digitakt-ii', '1.17', ['perform-direct'], catalog)).toMatchObject({
-      core: { file: 'core-1.0.elemod', device: 'digitakt-mk2', os: '1.17' },
+      core: { file: DT2, sha256: DT2_BASE.identity, device: 'digitakt-mk2', os: '1.17' },
       mods: [{ id: 'perform-direct', file: 'perform-direct-1.0.elemod', device: 'digitakt-mk2', os: '1.17' }],
       missing: [],
     })

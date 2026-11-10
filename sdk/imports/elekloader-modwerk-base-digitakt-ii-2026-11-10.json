@@ -1,0 +1,23 @@
+{
+  "schema": 1,
+  "kind": "elekloader-catalog",
+  "revision": "modwerk-base-digitakt-ii-2026-11-10",
+  "about": "Modwerk's Digitakt II base for OS 1.17, built by npm run machine:base -- digitakt-ii from core-dt2 1.1's source (sdk/imports/core-dt2-source-3d7c2e3.json) and Modwerk's own sources in sdk/machines/digitakt-ii/elekloader/modwerk/ (the sequencer's pitch, grid and phrase collections, and the active project's generation). One layout, identified by its SHA-256 in sdk/machines/digitakt-ii/base-binding.json (ce3e5488). The site builds every Digitakt II set on it. Stock-free: each site names its stock bytes by length and SHA-256, and the build fills them from the owner's OS.",
+  "cores": [
+    {
+      "file": "modwerk-base-digitakt-ii-ce3e5488.elemod",
+      "sha256": "ce3e54884b38c6a2313dae7f97e559158c62dacf299a7df47a7b0e432a877e8f",
+      "id": "core",
+      "version": "1.1",
+      "device": "digitakt-mk2",
+      "os": "1.17",
+      "license": "GPL-2.0-or-later",
+      "source": {
+        "repo": "repeat98/modwerk",
+        "commit": "68a9b06c86304d06f30df3daf5a5a18168b36c99",
+        "path": "sdk/imports/packages/modwerk-base-digitakt-ii/modwerk-base-digitakt-ii-ce3e5488.elemod"
+      }
+    }
+  ],
+  "mods": []
+}
