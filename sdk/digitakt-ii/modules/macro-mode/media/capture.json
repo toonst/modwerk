@@ -1,0 +1,26 @@
+{
+ "schemaVersion": 1,
+ "machine": "digitakt-ii",
+ "moduleId": "macro-mode",
+ "moduleVersion": "0.1.0-experimental",
+ "imageSha256": "6be06fd9d3d625e7ddc54c74fcc6f447403f3e2bdbffee50db26f6569d33a625",
+ "firmware": "1.17",
+ "build": "The site's builder path: the Modwerk Digitakt II base (ce3e5488) + this folder's Macro Mode 0.1.0-experimental (package 5791a094), linked on stock OS 1.17 by the vendored kit 0.7.0, version MW01.",
+ "emulator": "digikit zero_patched (digikit 3d3a243): ColdFire with the DSP side answering zeros, so the frame interrupt runs; the 128x64 frame shown 4x without interpolation",
+ "capturedAt": "2026-11-10",
+ "setup": "The emulator's card with its stock project; the run's panel input as each capture's plan says.",
+ "captures": [
+  {
+   "path": "media/macro-page.png",
+   "sha256": "25c8be347c1ee78d7357da9165a5cbae0b8d1d6818e332263006e71e1cb85484",
+   "plan": "digi_macro 8b67398 tests/emu/scenario.py on the cold-booted build (main screen saved, every run from it): STOP, STOP; SETTINGS opened and PAGE + MOD tried (D9); NO, NO; SRC; PAGE held, MOD tapped, PAGE released; settle; frame (scenario screen 02-macro)",
+   "frame": "the macro page, no macro set up yet"
+  },
+  {
+   "path": "media/macro-setup.png",
+   "sha256": "1a4798df1cdb6b9193b76714b6436e0328936a3d148a42364f8263e626cdc8e4",
+   "plan": "digi_macro 8b67398 tests/emu/scenario.py on the cold-booted build (main screen saved, every run from it): STOP, STOP; SETTINGS opened and PAGE + MOD tried (D9); NO, NO; SRC; PAGE + MOD; A turned +40, C turned -40; B and D turned 16 (B pushed); push A + NO; push A; FUNC held, push C, FUNC released (setup of macro C); B turned until slot 2 has a destination; NO; F pushed and turned to depth 10.00 or more, then turned 64 unpushed; TRIG 3 and TRIG 5 tapped; settle; frame (scenario screen 07-setup-edited)",
+   "frame": "the setup of macro C: parameter 2 set to SRC TUNE with its depth"
+  }
+ ]
+}

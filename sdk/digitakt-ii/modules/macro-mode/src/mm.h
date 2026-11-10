@@ -1,0 +1,271 @@
+/* SPDX-License-Identifier: GPL-2.0-or-later */
+/* macro-mode: the device-independent part (PLAN.md sections 3 and 4). Nothing here calls the firmware: the
+ * elekloader glue (mm_glue.c) feeds key, encoder and tick events in and draws through a fill callback, and the
+ * host tests (tests/) drive the same code. */
+#ifndef MM_H
+#define MM_H
+
+#include <stdint.h>
+
+/* The mod has no C library: keep GCC from turning a loop into a call to memset or memcpy (it did so at -O2). A pragma
+ * rather than -fno-tree-loop-distribute-patterns, which some builders do not take; the host tests are not affected. */
+#if defined(__mcoldfire__) && defined(__GNUC__) && !defined(__clang__)
+#pragma GCC optimize("no-tree-loop-distribute-patterns")
+#endif
+
+#define MM_MACROS 8
+#define MM_SLOTS 4
+#define MM_TRACKS 16
+#define MM_POS_MIN (-64) /* macro position: -64 .. +63, 0 = centre (D5) */
+#define MM_POS_MAX 63
+/* Slot depth as the stock modulation setups have it: -128.00 .. +127.99 in 1/256 steps, 0 = off; at full depth and
+ * full turn the offset spans the parameter range. */
+#define MM_DEPTH_MIN (-32768)
+#define MM_DEPTH_MAX 32767
+#define MM_DEPTH_ONE 256  /* 1.00 */
+#define MM_NAME_LEN 5     /* a macro's name, as a MIDI machine parameter's */
+#define MM_HOLD_TICKS 15  /* FUNC + push held this long (about 0.5 s of ev_tick) names the macro */
+#define MM_RAW_MAX 0x7f00 /* a parameter's raw range is 0 .. 0x7f00 (digikit finding 02) */
+#define MM_COARSE 8       /* push + turn step (D3) without the firmware's encoder filter (the host tests) */
+#define MM_POPUP_TICKS 30 /* how long a turned knob shows its value: about 1 s of ev_tick */
+#define MM_MAX_PAIRS (MM_MACROS * MM_SLOTS)
+
+/* Key codes: the panel's, the same on both devices (digikit devices/digitakt-ii-leds.toml, digitone-ii-leds.toml). */
+enum {
+    MM_K_TRIG = 1,    /* the page keys: TRIG, SRC, FLTR, AMP, FX (1 .. 5) and MOD */
+    MM_K_FX = 5,
+    MM_K_MOD = 6,
+    MM_K_PRESET = 7,  /* PRESET (the kit menu; FUNC: PERFORM), SETTINGS, TEMPO: their stock function, over the mode */
+    MM_K_SETTINGS = 8,
+    MM_K_TEMPO = 9,
+    MM_K_YES = 10,
+    MM_K_UP = 11,
+    MM_K_NO = 12,
+    MM_K_LEFT = 13,
+    MM_K_DOWN = 14,
+    MM_K_RIGHT = 15,
+    MM_K_TRK = 16,    /* held with a trig key: selects that track */
+    MM_K_FUNC = 17,
+    MM_K_RECORD = 19,
+    MM_K_PLAY = 20,
+    MM_K_STOP = 21,
+    MM_K_PAGE = 22,
+    MM_K_PTN = 23,
+    MM_K_SONG = 24,
+    MM_K_TRIG1 = 25,  /* .. 40: TRIG 16 */
+    MM_K_PUSH_A = 41, /* .. 48: encoder H pushed */
+    MM_K_LEVEL = 49,  /* LEVEL/DATA pushed */
+};
+#define MM_ENC_LEVEL 9 /* [O] spike S1: the ev_enc id of LEVEL/DATA; it moves every macro at once */
+
+/* Key event flags (elekloader ev_key, ev+16). */
+#define MM_F_PRESS 0x01
+#define MM_F_FUNC 0x02
+#define MM_F_REPEAT 0x08
+#define MM_F_RELEASE 0x10
+
+/* LED values the mode asks for (docs/findings/s2-leds.md): the high nibble is a palette index, seen on a Digitakt II:
+ * 1 red, 2 green, 3 deep blue, 4 yellow, 5 light blue, 6 purple, 7 white, 8 orange; 0x01 is off. */
+#define MM_LED_OFF 0x01
+#define MM_LED_RED 0x11
+#define MM_LED_BLUE 0x31
+
+enum { MM_OFF = 0, MM_MACRO, MM_SETUP };
+
+typedef struct {
+    uint8_t dest;    /* value-array index; 0 = none */
+    int16_t depth;   /* MM_DEPTH_MIN .. MM_DEPTH_MAX, 1/256 units, 0 = off */
+    uint16_t tracks; /* bit t: track t + 1 */
+} mm_slot;
+
+typedef struct {
+    int8_t pos; /* -64 .. +63, 0 = centre */
+    mm_slot slot[MM_SLOTS];
+    char name[MM_NAME_LEN + 1]; /* "" until named */
+} mm_macro;
+
+/* The destinations a slot can take, in the order the encoder steps through them (W4, spike S6). */
+enum { MM_G_NONE = 0, MM_G_SRC, MM_G_FLTR, MM_G_AMP, MM_G_FX, MM_G_PORT, MM_G_COUNT };
+typedef struct {
+    uint8_t index;    /* value-array index */
+    uint8_t group;    /* MM_G_*: the page it is on, the setup screen's column heading */
+    uint16_t lo, hi;  /* the raw range the frame value is held in; hi 0 means 0 .. MM_RAW_MAX */
+    const char *name; /* the firmware's short name, up to 5 characters; 0 names it by index */
+    const char *full; /* the firmware's long name, for the destination list; 0: the short one */
+} mm_dest;
+
+typedef struct {
+    const mm_dest *d;
+    uint8_t count;
+    uint8_t bound;    /* indices at or above this are never applied */
+} mm_dests;
+
+typedef struct mm {
+    uint8_t state;        /* MM_OFF, MM_MACRO, MM_SETUP */
+    uint8_t edit;         /* the macro SETUP shows */
+    uint8_t sel;          /* the selected slot in SETUP (D12) */
+    uint8_t popup;        /* knob + 1 whose value is shown, 0 = none */
+    uint8_t popup_ticks;
+    uint8_t dirty_screen; /* the frame must be recomposed */
+    uint8_t dirty_mods;   /* the per-track lists must be rebuilt */
+    uint8_t dirty_config; /* the configuration must be stored */
+    uint8_t dirty_leds;   /* the LEDs the mode holds changed */
+    uint8_t pushes;       /* bit i: push i held, its press taken */
+    uint8_t func;         /* FUNC held */
+    uint8_t mod_armed;    /* MOD held and its press went to the firmware: it can start a chord */
+    uint8_t page_armed;   /* the same for PAGE */
+    uint32_t taken[2];    /* bit c: the press of key c was taken, so its repeats and release are taken too */
+    mm_macro m[MM_MACROS];
+    const mm_dests *dests;
+    int (*can_enter)(void); /* D9: 0 when a menu or dialog is open; a null pointer allows entry */
+    /* 1 while a firmware view is over the mode, as over a page: a menu, a dialog, a popup (pattern, bank, song), the
+     * naming screen. That view gets the keys; the mode stays on under it and only leaves for a page key, as a page
+     * does. (Mute mode's view leaves the mode its keys; the knobs go as the firmware sends them: the glue.) A null
+     * pointer: never. */
+    int (*covered)(void);
+    /* The firmware's key state, 1 while key code c is down. With it, FUNC, the pushes and the entry chord are read
+     * from the panel, not from releases, which the firmware does not always pass on (FUNC's, after FUNC + NO). */
+    int (*key_down)(int code);
+    uint8_t enc_scaled;   /* encoder deltas arrive in steps, push already applied (the firmware's encoder filter) */
+    uint8_t list;         /* SETUP: slot + 1 whose destination list is open, 0 = none */
+    uint8_t list_top;     /* the list's first visible line */
+    uint8_t trk;          /* TRK held (without key_down) */
+    uint8_t announce;     /* the mode was entered: the glue shows its title in the header, as a page's */
+    uint8_t name_arm;     /* macro + 1 of a FUNC + push still held: short, its setup; held, its name */
+    uint8_t name_ticks;
+    uint8_t name_req;     /* macro + 1 to name: the glue opens the firmware's naming screen */
+} mm_t;
+
+#define MM_LIST_ROWS 7    /* the destination list's visible lines */
+/* A fresh state: every macro at the centre, every slot on all tracks. */
+void mm_init(mm_t *s, const mm_dests *dests);
+
+/* Input, on the UI task. Each returns 1 when the mode takes the event, 0 when it goes on to the firmware. */
+int mm_key(mm_t *s, int code, int flags);
+int mm_enc(mm_t *s, int enc, int delta);
+/* 1 when encoder enc is one the mode turns: on, and A-H or LEVEL/DATA. Under a firmware view the glue first offers
+ * the turn to that view, as the firmware does; the mode gets what no view over it takes, as a page does. */
+int mm_enc_takes(const mm_t *s, int enc);
+/* Once per ev_tick: returns 1 when the frame must be recomposed (and clears dirty_screen). dirty_leds is the glue's. */
+int mm_tick(mm_t *s);
+
+/* The per-track (destination, delta) lists the frame handler adds (PLAN.md 4.6). */
+typedef struct {
+    uint8_t n;
+    uint8_t dest[MM_MAX_PAIRS];
+    int16_t delta[MM_MAX_PAIRS];
+    uint16_t lo[MM_MAX_PAIRS], hi[MM_MAX_PAIRS]; /* the destination's range */
+} mm_track_mods;
+
+typedef struct {
+    uint16_t active; /* bit t: track t has pairs */
+    mm_track_mods t[MM_TRACKS];
+} mm_mods;
+
+int32_t mm_slot_delta(int pos, int depth);
+void mm_build(const mm_t *s, mm_mods *out);
+/* Interrupt level: adds the deltas into the per-frame value arrays and saturates to each destination's range. */
+void mm_apply(const mm_mods *mods, int16_t *values, int stride, int bound);
+
+/* LEDs the mode holds: up to cap (key code, value) pairs; 0 when the mode is off (W1). */
+#define MM_MAX_LEDS (1 + (MM_K_FX - MM_K_TRIG + 1) + MM_TRACKS)
+int mm_leds(const mm_t *s, uint8_t *code, uint8_t *value, int cap);
+
+/* The stored configuration (W3): a versioned blob, MM_BLOB_SIZE bytes. */
+#define MM_BLOB_VERSION 2
+#define MM_BLOB_SIZE (5 + MM_MACROS * MM_SLOTS * 5 + MM_MACROS * MM_NAME_LEN + 2)
+#define MM_BLOB_V1_SIZE (5 + MM_MACROS * MM_SLOTS * 4 + 2) /* version 1: depth -64 .. +63 in a byte, no names */
+int mm_encode(const mm_t *s, uint8_t *out);         /* -> MM_BLOB_SIZE */
+int mm_decode(mm_t *s, const uint8_t *in, int len); /* 0, or -1 (unknown version, bad size or check) */
+/* A setup kept with a kit and with the project (docs/findings/s7-project-storage.md), as elekloader core's kit and
+ * project data: the slots, the names and the knobs' positions, MM_SETUP_SIZE bytes; all zero is none (the stream
+ * ends with a 1 bit). A bit stream, high bit first, packed to fit the 191 bytes core has for kit data on the
+ * Digitakt II: the 32 destinations in groups of three (and a last pair) as numbers in base MM_DEST_RADIX (every
+ * destination is below the device's bound), each slot's depth (16 bits) and tracks (16), each name as a number in
+ * base 60 (the naming screen's characters, mm_store.c; 30 bits), each position + 64 (7 bits), then a 1. */
+#if defined(MM_DN2)
+#define MM_DEST_RADIX 100 /* the LFO DEST bound on the Digitone II */
+#define MM_DEST3_BITS 20  /* 100^3 < 2^20 */
+#define MM_DEST2_BITS 14  /* 100^2 < 2^14 */
+#else
+#define MM_DEST_RADIX 70  /* the Digitakt II's (and the host tests') */
+#define MM_DEST3_BITS 19  /* 70^3 < 2^19 */
+#define MM_DEST2_BITS 13  /* 70^2 < 2^13 */
+#endif
+#define MM_NAME_RADIX 60  /* a name character's code: 0 space (or none), 1 .. 59 the naming screen's */
+#define MM_NAME_BITS 30   /* 60^5 < 2^30 */
+#define MM_SETUP_BITS (((MM_MACROS * MM_SLOTS) / 3) * MM_DEST3_BITS + MM_DEST2_BITS + MM_MACROS * MM_SLOTS * 32 + \
+                       MM_MACROS * MM_NAME_BITS + MM_MACROS * 7 + 1)
+#define MM_SETUP_SIZE ((MM_SETUP_BITS + 7) / 8) /* 191 on the Digitakt II, 192 on the Digitone II */
+#define MM_PROJ_SIZE ((MM_SETUP_SIZE + 3) & ~3) /* core's project data comes in longs */
+void mm_setup_pack(const mm_t *s, uint8_t *out);
+int mm_setup_valid(const uint8_t *in);          /* holds a setup: not all zero */
+int mm_setup_unpack(mm_t *s, const uint8_t *in); /* 0, or -1 (none); the positions come too */
+
+/* The kits feature (src/mm_kits.c; built in unless left out): setups per project or per kit, chosen in PERSONALIZE >
+ * MACRO SETUP. Every kit keeps its own setup and the project its own, the knobs' positions included. elekloader's core
+ * saves, loads and copies them with the kits and the project (kit n is pattern n's) and says when one changed
+ * (mm_scope_kit_changed, mm_scope_proj_loaded); each tick mm_scope_tick keeps the setup on (and a knob turned since)
+ * in its kit's or the project's block and follows the kit on. */
+#define MM_KITS 128
+enum { MM_SCOPE_PROJECT = 0, MM_SCOPE_KIT };
+/* MM_PROJECT_ONLY: one setup per project and no other (src/mm_kits.h); the kits' table is then not kept. */
+#ifdef MM_PROJECT_ONLY
+#define MM_SCOPE_KITS 1
+#else
+#define MM_SCOPE_KITS MM_KITS
+#endif
+typedef struct {
+    uint8_t kit[MM_SCOPE_KITS][MM_SETUP_SIZE]; /* core's kit data; all zero: none yet */
+    uint8_t proj[MM_PROJ_SIZE];          /* core's project data */
+    uint8_t mode;                 /* MM_SCOPE_* */
+    volatile uint8_t gen;         /* bumped when a load or a copy changes a kit's setup */
+    uint8_t seen;                 /* gen, as mm_scope_follow last saw it */
+    volatile uint8_t proj_loaded; /* a project's data was loaded */
+    int16_t cur;                  /* the kit whose setup is on, -1 none */
+    int8_t kept[MM_MACROS];       /* the knobs' positions as the block on holds them */
+} mm_scope;
+void mm_scope_kit_changed(mm_scope *p);
+void mm_scope_proj_loaded(mm_scope *p);
+void mm_scope_edited(mm_scope *p, const mm_t *s);              /* the setup on, into its block */
+int mm_scope_follow(mm_scope *p, mm_t *s, int kit);            /* 1 when the setup changed */
+int mm_scope_tick(mm_scope *p, mm_t *s, int kit);              /* edited when needed, then follow */
+void mm_scope_set(mm_scope *p, mm_t *s, int mode);
+
+/* A macro's name from the naming screen: up to MM_NAME_LEN characters, trailing spaces dropped. */
+void mm_set_name(mm_t *s, int macro, const char *name);
+
+/* A card sector holding the blob (W3): "MMCF", a sequence number, the blob; two copies, the newer valid one wins. */
+#define MM_RECORD_SIZE 512
+#define MM_RECORD_SCOPE (8 + MM_BLOB_SIZE) /* 0x80 | MM_SCOPE_*; 0 in older records: per project */
+void mm_record_encode(const mm_t *s, uint32_t seq, uint8_t *out); /* MM_RECORD_SIZE bytes */
+/* Which copy to load: 0 or 1, -1 when neither holds a valid record; *seq gets its sequence number. */
+int mm_record_pick(const mm_t *s, const uint8_t *a, const uint8_t *b, uint32_t *seq);
+
+/* Destinations. */
+int mm_dest_pos(const mm_dests *d, int dest);       /* its place in the list, -1 for none or unknown */
+/* The destination list's lines: none, then per page a separator and its destinations. */
+int mm_dest_lines(const mm_dests *d);
+int mm_dest_line(const mm_dests *d, int dest);      /* the line of a destination (0 for none) */
+int mm_line_dest(const mm_dests *d, int line, int *group_first); /* the destination on a line, -1 on a separator */
+void mm_dest_label(const mm_dests *d, int dest, char *buf); /* 8 bytes */
+const char *mm_dest_group(const mm_dests *d, int dest);     /* the column heading: SRC, FLTR, ...; META for none */
+
+/* Screens: fill(ctx, x0, y0, x1, y1, colour) with y = 0 the top row, corners inclusive; colour 0 clears, 1 sets,
+ * -1 inverts. text(ctx, x, ytop, flags, s) writes s with its top row at ytop, from x or centred on it
+ * (MM_TEXT_CENTRE), in the firmware's 5-pixel font or, with MM_TEXT_SMALL, its narrow one (3-pixel letters: the
+ * stock page box, the lists); without it the mode uses its own 3 x 5 font. The macro screen leaves rows
+ * 0 .. MM_HEADER - 1 (the stock header: pattern, name, tempo) to the firmware. */
+#define MM_HEADER 10
+#define MM_TEXT_CENTRE 1
+#define MM_TEXT_SMALL 2
+typedef void mm_fill_fn(void *ctx, int x0, int y0, int x1, int y1, int colour);
+typedef void mm_text_fn(void *ctx, int x, int ytop, int flags, const char *s);
+typedef struct {
+    mm_fill_fn *fill;
+    void *ctx;
+    mm_text_fn *text;
+} mm_canvas;
+void mm_draw(const mm_t *s, const mm_canvas *c);
+
+#endif

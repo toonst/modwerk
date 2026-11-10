@@ -1,0 +1,48 @@
+{
+  "schemaVersion": 1,
+  "reportedOn": "2026-11-10",
+  "status": "emulator",
+  "scope": "macro-mode 0.1.0-experimental alone on the Modwerk Digitakt II base (core 1.1), OS 1.17",
+  "emulator": "digikit zero_patched (digikit 3d3a243): the ColdFire with the DSP side answering zeros, so the frame interrupt runs. No sound.",
+  "scenarios": "digi_macro 8b67398, tests/emu",
+  "build": {
+    "label": "MW01",
+    "os": "1.17",
+    "syxSha256": "6be06fd9d3d625e7ddc54c74fcc6f447403f3e2bdbffee50db26f6569d33a625",
+    "packageSha256": {
+      "macro-mode-0.1.0-experimental-os1.17.elemod": "5791a094ba72ee25571e99c2a9dbe7c90367330ebea77434d7302aface427c25",
+      "modwerk-base-digitakt-ii-ce3e5488.elemod": "ce3e54884b38c6a2313dae7f97e559158c62dacf299a7df47a7b0e432a877e8f"
+    },
+    "content": "The site's builder path (prepareBuild, buildWithLock, vendored kit 0.7.0) on the contributor's stock Digitakt_II_OS1.17.syx (26c22f66...). Passed the site's preflight and elekloader's verify; elekloader's own linker gives the same main OS."
+  },
+  "results": [
+    {
+      "scenario": "project_only.py",
+      "checks": 23,
+      "failed": 0,
+      "covers": "the project's setup, frame values on top of the kit, SAVE PROJECT AS, LOAD PROJECT, nothing in the kit records or the card sectors"
+    },
+    {
+      "scenario": "compat_project.py",
+      "checks": 13,
+      "failed": 0,
+      "covers": "round trips of the project file through the stock OS, and another tool's bytes in the header's gap left alone"
+    },
+    {
+      "scenario": "scenario.py",
+      "checks": 94,
+      "failed": 3,
+      "covers": "entry and exit, the input map, the setup and naming, frame values held in range, LEDs, macro mode under stock menus and popups",
+      "failedChecks": "its three restart checks, which look for the card record digi_macro's own build keeps and this build does not"
+    },
+    {
+      "scenario": "CREATE NEW by hand",
+      "result": "the setup and the knob positions that were on stay"
+    }
+  ],
+  "notTested": [
+    "a unit",
+    "audio",
+    "a power cycle"
+  ]
+}

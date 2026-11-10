@@ -1,0 +1,11 @@
+[
+  {
+    "version": "0.1.0-experimental",
+    "date": "2026-11-10",
+    "changes": [
+      "First release, for Digitakt II OS 1.17 on the Digitakt II base (core 1.1).",
+      "Hold PAGE and press MOD: encoders A-H become eight macros, each moving up to four parameters on the tracks you choose, on top of the sound.",
+      "One setup per project, saved in the project file with the knob positions."
+    ]
+  }
+]

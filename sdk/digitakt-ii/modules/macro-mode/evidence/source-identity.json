@@ -1,0 +1,102 @@
+{
+  "schemaVersion": 1,
+  "algorithm": "sha256 of canonical sorted JSON {sources,build}; UTF-8, compact separators",
+  "sha256": "19b03c9db1c9a45797e6f4fc335eb8782199dd740bc85d798a5c7821f75b043e",
+  "sources": {
+    "src/mm.h": "8358f38c468825e25fe1bc4b8580d3f6e8cdf34568b74848aa0e5729e62ee22d",
+    "src/mm_apply.c": "b96348f1624792a608a0de8e52347a366adf2074cd31d887de30acf9753fd90e",
+    "src/mm_dests.c": "99dcc9ab537208d9780c8bf35c5e10e8c82f44ead6e0505477303d9664e39d85",
+    "src/mm_draw.c": "a3eeeb60f1851b234abf09e53482ca951a59c42e6c76ea24758876808f29f896",
+    "src/mm_glue.c": "1bf4403feabe92be6199b7c7c65c02471509227abe12342bc0861dc21995020f",
+    "src/mm_kits.c": "fc01404d5bb5c098eb36d1c88c2d3d2f0795264bbd64fad39476f6281b1e9126",
+    "src/mm_kits.h": "4c7e85e7471a4ce69ccd22cfcebe755a3519ec7b6db07950c0e482b348264c28",
+    "src/mm_logic.c": "2f7de63c4acd1dfa9870330e73c1f6ab3eda1f03d8fc92188bf7fc851ff621d2",
+    "src/mm_os.h": "24ce57ce381ba57f787173f0d949912194a1c278e0395f6a12f6057740d27efb",
+    "src/mm_scope.c": "2f1d122ec3ba96c391efad87af10061d96c5584fdc3d9ffcbea007a13af53e80",
+    "src/mm_store.c": "530871b0ea4ab4786f27652db155878122366d5a69cb28491dde4bab7454cca5"
+  },
+  "build": {
+    "schemaVersion": 1,
+    "sources": [
+      "src/mm_glue.c",
+      "src/mm_logic.c",
+      "src/mm_apply.c",
+      "src/mm_store.c",
+      "src/mm_draw.c",
+      "src/mm_dests.c",
+      "src/mm_scope.c",
+      "src/mm_kits.c"
+    ],
+    "defsym": {},
+    "cflags": [
+      "-DMM_DT2",
+      "-DMM_FEATURE_KITS",
+      "-DMM_PROJECT_ONLY"
+    ],
+    "weak": [],
+    "subscribe": [
+      {
+        "event": "ev_key",
+        "fn": "mm_ev_key",
+        "order": 10
+      },
+      {
+        "event": "ev_enc",
+        "fn": "mm_ev_enc",
+        "order": 10
+      },
+      {
+        "event": "ev_tick",
+        "fn": "mm_ev_tick",
+        "order": 50
+      },
+      {
+        "event": "ev_draw",
+        "fn": "mm_ev_draw",
+        "order": 90
+      },
+      {
+        "event": "ev_frame_params",
+        "fn": "mm_ev_frame_params",
+        "order": 50
+      },
+      {
+        "event": "ev_key_leds",
+        "fn": "mm_ev_key_leds",
+        "order": 10
+      }
+    ],
+    "contribute": [
+      {
+        "to": "core_projdata",
+        "order": 50,
+        "data": "00000000",
+        "relocs": [
+          [
+            0,
+            "abs32",
+            "sym:mm_projdata",
+            0
+          ]
+        ]
+      }
+    ],
+    "collections": {},
+    "copied": [],
+    "regions": [],
+    "claims": [
+      "ui:PAGE + MOD",
+      "ui:macro mode",
+      "projdata:MMP2"
+    ],
+    "requires": [],
+    "derive": null,
+    "releases": {
+      "1.17": {
+        "defsym": {},
+        "cflags": [],
+        "sites": []
+      }
+    }
+  }
+}

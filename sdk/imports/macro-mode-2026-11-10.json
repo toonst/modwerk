@@ -1,0 +1,84 @@
+{
+  "schemaVersion": 1,
+  "module": "digitakt-ii/macro-mode",
+  "version": "0.1.0-experimental",
+  "date": "2026-11-10",
+  "upstream": {
+    "repository": "https://github.com/toonst/digi_macro",
+    "revision": "62f0b0add7caf17b7983265a8239451e17b2ed90",
+    "path": ".",
+    "license": "GPL-2.0-or-later"
+  },
+  "changes": [
+    "Macro mode's source imported unchanged from toonst/digi_macro at 62f0b0a: the eleven files under src/, its LICENSE and its README (as upstream/README.md).",
+    "build.json is written from upstream's mods/dt2/mod.json and mods/dt2/project.json, the build upstream makes with MM_KITS=project: the same sources, flags (-DMM_DT2, -DMM_FEATURE_KITS, -DMM_PROJECT_ONLY), subscriptions, contribution and claims. One setup per project, in core's project data alone: no kit data, no PERSONALIZE row, no card sectors.",
+    "It has no stock sites: everything the module hooks is the base's. src/mm_kits.c includes the base's header under either of its names (mk2/core.h here)."
+  ],
+  "files": [
+    {
+      "from": "src/mm.h",
+      "to": "src/mm.h",
+      "sha256": "8358f38c468825e25fe1bc4b8580d3f6e8cdf34568b74848aa0e5729e62ee22d"
+    },
+    {
+      "from": "src/mm_apply.c",
+      "to": "src/mm_apply.c",
+      "sha256": "b96348f1624792a608a0de8e52347a366adf2074cd31d887de30acf9753fd90e"
+    },
+    {
+      "from": "src/mm_dests.c",
+      "to": "src/mm_dests.c",
+      "sha256": "99dcc9ab537208d9780c8bf35c5e10e8c82f44ead6e0505477303d9664e39d85"
+    },
+    {
+      "from": "src/mm_draw.c",
+      "to": "src/mm_draw.c",
+      "sha256": "a3eeeb60f1851b234abf09e53482ca951a59c42e6c76ea24758876808f29f896"
+    },
+    {
+      "from": "src/mm_glue.c",
+      "to": "src/mm_glue.c",
+      "sha256": "1bf4403feabe92be6199b7c7c65c02471509227abe12342bc0861dc21995020f"
+    },
+    {
+      "from": "src/mm_kits.c",
+      "to": "src/mm_kits.c",
+      "sha256": "fc01404d5bb5c098eb36d1c88c2d3d2f0795264bbd64fad39476f6281b1e9126"
+    },
+    {
+      "from": "src/mm_kits.h",
+      "to": "src/mm_kits.h",
+      "sha256": "4c7e85e7471a4ce69ccd22cfcebe755a3519ec7b6db07950c0e482b348264c28"
+    },
+    {
+      "from": "src/mm_logic.c",
+      "to": "src/mm_logic.c",
+      "sha256": "2f7de63c4acd1dfa9870330e73c1f6ab3eda1f03d8fc92188bf7fc851ff621d2"
+    },
+    {
+      "from": "src/mm_os.h",
+      "to": "src/mm_os.h",
+      "sha256": "24ce57ce381ba57f787173f0d949912194a1c278e0395f6a12f6057740d27efb"
+    },
+    {
+      "from": "src/mm_scope.c",
+      "to": "src/mm_scope.c",
+      "sha256": "2f1d122ec3ba96c391efad87af10061d96c5584fdc3d9ffcbea007a13af53e80"
+    },
+    {
+      "from": "src/mm_store.c",
+      "to": "src/mm_store.c",
+      "sha256": "530871b0ea4ab4786f27652db155878122366d5a69cb28491dde4bab7454cca5"
+    },
+    {
+      "from": "LICENSE",
+      "to": "LICENSE",
+      "sha256": "edaef632cbb643e4e7a221717a6c441a4c1a7c918e6e4d56debc3d8739b233f6"
+    },
+    {
+      "from": "README.md",
+      "to": "upstream/README.md",
+      "sha256": "63267ed98f506e69fe2642ae0d0aca6d72afe27c3b33bfd10f1b5f00ce40d58b"
+    }
+  ]
+}

@@ -1,0 +1,71 @@
+{
+  "schemaVersion": 1,
+  "measuredOn": "2026-11-10",
+  "method": "emulator instruction counts; not time on a unit",
+  "tool": "digi_macro 8b67398 tests/emu/frame_load.py in digikit's zero_patched runner (digikit 3d3a243)",
+  "imageSha256": "6be06fd9d3d625e7ddc54c74fcc6f447403f3e2bdbffee50db26f6569d33a625",
+  "stockSha256": "26c22f6652625ac2cfd47f7ee970d388ed8b6427dae3563c0a6a2f2d334350d5",
+  "what": "Instructions from the frame interrupt's first instruction (exception vector 191) to its return, and from mm_ev_frame_params' first instruction to its return, over 200 frames per state. A higher interrupt that comes in between is counted with the frame it interrupts.",
+  "states": [
+    {
+      "state": "stock, stopped",
+      "frames": 200,
+      "interrupt_median": 44355,
+      "interrupt_min": 44347,
+      "interrupt_max": 61184,
+      "hook_median": 0,
+      "hook_min": 0,
+      "hook_max": 0
+    },
+    {
+      "state": "stock, playing",
+      "frames": 200,
+      "interrupt_median": 44291,
+      "interrupt_min": 44283,
+      "interrupt_max": 49990,
+      "hook_median": 0,
+      "hook_min": 0,
+      "hook_max": 0
+    },
+    {
+      "state": "mod, no macro set up, stopped",
+      "frames": 200,
+      "interrupt_median": 44821,
+      "interrupt_min": 44658,
+      "interrupt_max": 47900,
+      "hook_median": 4,
+      "hook_min": 4,
+      "hook_max": 4
+    },
+    {
+      "state": "mod, 1 macro x 4 destinations x 16 tracks, stopped",
+      "frames": 200,
+      "interrupt_median": 47161,
+      "interrupt_min": 46997,
+      "interrupt_max": 63996,
+      "hook_median": 1831,
+      "hook_min": 1831,
+      "hook_max": 1831
+    },
+    {
+      "state": "mod, 8 macros x 4 destinations x 16 tracks, stopped",
+      "frames": 200,
+      "interrupt_median": 58417,
+      "interrupt_min": 58277,
+      "interrupt_max": 61646,
+      "hook_median": 12631,
+      "hook_min": 12631,
+      "hook_max": 12631
+    },
+    {
+      "state": "mod, 8 macros x 4 destinations x 16 tracks, playing",
+      "frames": 200,
+      "interrupt_median": 58413,
+      "interrupt_min": 58277,
+      "interrupt_max": 64060,
+      "hook_median": 12631,
+      "hook_min": 12631,
+      "hook_max": 12631
+    }
+  ]
+}

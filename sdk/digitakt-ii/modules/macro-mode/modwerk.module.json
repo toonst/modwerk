@@ -1,0 +1,188 @@
+{
+  "schemaVersion": 3,
+  "id": "macro-mode",
+  "name": "Macro Mode",
+  "version": "0.1.0-experimental",
+  "machine": "digitakt-ii",
+  "category": "scenes",
+  "exclusive": false,
+  "author": {
+    "github": "toonst",
+    "credits": [
+      "toonst — macro mode, its design and code, and core-dt2 1.1's frame values, key LEDs and project data it runs on.",
+      "irpina — Elekloader and core-dt2, the core the Digitakt II base starts from.",
+      "Claptom-music — the Digitakt II base it is built on."
+    ]
+  },
+  "maintainers": [
+    "toonst"
+  ],
+  "source": {
+    "repository": "https://github.com/toonst/digi_macro",
+    "revision": "62f0b0add7caf17b7983265a8239451e17b2ed90",
+    "path": "."
+  },
+  "presentation": {
+    "label": "MACRO MODE",
+    "family": "Performance macros",
+    "summary": "Hold PAGE and press MOD: encoders A-H become eight macro knobs, each moving up to four sound parameters on the tracks you choose.",
+    "overview": "Macro Mode adds a page of eight performance macros. Each macro moves up to four destinations, picked from a list like the stock modulation setup's, each with its own depth and its own set of tracks. The macros ride on top of the sound as the stock modulators do, once a frame, so they never change the kit, cannot be recorded or locked, and leave the saved sound as it was. A project has one setup, saved inside the project file with the knob positions.",
+    "highlights": [
+      "Eight macro knobs on encoders A-H, LEVEL/DATA moves all eight together",
+      "Each macro drives up to four parameters, each with its own depth and its own tracks",
+      "Rides on top of the kit like the stock modulation: the saved sound never changes",
+      "One setup per project, saved in the project file with the knob positions",
+      "Projects stay readable on the stock OS"
+    ],
+    "usage": [
+      "Hold PAGE and press MOD: the macro page opens and MOD lights blue.",
+      "Hold FUNC and push encoder A: the setup of macro A opens.",
+      "Turn encoder A to choose FLTR FREQ, and encoder E to set its depth, for example +64.00.",
+      "Press the trig keys of the tracks it should act on; they light red.",
+      "Press NO, then turn encoder A: the filter opens and closes on those tracks, and the kit stays as saved."
+    ]
+  },
+  "access": {
+    "location": "Hold PAGE and press MOD (or MOD and then PAGE).",
+    "steps": [
+      "Hold PAGE and press MOD: the macro page opens and MOD lights blue.",
+      "FUNC + push an encoder opens that macro's setup; FUNC + push and hold names it.",
+      "NO or MOD goes back from the setup; MOD or another page key leaves macro mode."
+    ],
+    "screenshots": [
+      "media/macro-page.png",
+      "media/macro-setup.png"
+    ]
+  },
+  "controls": [
+    {
+      "name": "MACRO A-H",
+      "default": 0,
+      "doc": "Encoders A-H on the macro page: each macro's position, -64 to +63, centre 0. The four destinations of a macro move by position x depth, held in each parameter's range. LEVEL/DATA moves all eight; FUNC + NO or a push of LEVEL/DATA centres them.",
+      "labels": null
+    }
+  ],
+  "compatibility": {
+    "releases": [
+      "1.17"
+    ],
+    "requires": [],
+    "conflicts": [],
+    "limitations": [
+      "Needs the Digitakt II base (core 1.1): its frame values, key LEDs and project data. It does not build on core 1.0.",
+      "One setup for the whole project: every pattern and kit shares it. It keeps no kit data, so the kit records stay free for other modules.",
+      "CREATE NEW keeps the setup and the knob positions that were on; LOAD PROJECT brings the loaded project's own.",
+      "Macros are for playing: they cannot be recorded or parameter-locked, and they never change the saved sound.",
+      "Machine-specific parameters and the LFOs cannot be chosen as destinations yet.",
+      "Per-kit setups made with digi_macro's own build are not read; nor are setups from digi_macro builds before 0.1."
+    ]
+  },
+  "platform": {
+    "kind": "elemod",
+    "core": "1.1",
+    "build": "build.json",
+    "events": [
+      "ev_key",
+      "ev_enc",
+      "ev_tick",
+      "ev_draw",
+      "ev_frame_params",
+      "ev_key_leds"
+    ],
+    "claims": [
+      "ui:PAGE + MOD",
+      "ui:macro mode",
+      "projdata:MMP2"
+    ]
+  },
+  "resources": {
+    "memoryBytes": 28068,
+    "fastBytes": 0,
+    "load": {
+      "display": "Emulator count: up to 28% more instructions in the frame interrupt at the fullest setup; 4% for one macro",
+      "method": "emulator",
+      "conditions": "Emulator instruction counts, not time on a unit: OS 1.17 on the Digitakt II base in digikit's runner, 200 frames per state. The stock frame interrupt runs 44,355 instructions. The module's hook runs 4 with no macro set up, 1,831 with one macro on four destinations and sixteen tracks, and 12,631 with all eight macros on four destinations and sixteen tracks each. Memory: .run 19,793 and .bss 8,275 bytes of the mod area. See TESTING.md."
+    }
+  },
+  "evidence": {
+    "tier": "emulator",
+    "moduleVersion": "0.1.0-experimental",
+    "sourceSha256": "19b03c9db1c9a45797e6f4fc335eb8782199dd740bc85d798a5c7821f75b043e",
+    "reports": [
+      "evidence/source-identity.json",
+      "evidence/emulator-2026-11-10.json",
+      "evidence/frame-load.json"
+    ],
+    "hardware": null,
+    "verifiedBy": null
+  },
+  "tests": {
+    "report": "TESTING.md",
+    "summary": "Emulator, OS 1.17 on the Digitakt II base, the catalogue's package as the site's builder links it: the macro page, the setup, frame values and LEDs; SAVE PROJECT AS and LOAD PROJECT; round trips through the stock OS; and the frame interrupt's instruction count. Not run on a unit yet. See TESTING.md.",
+    "documentation": {
+      "tutorial": {
+        "title": "Quick tutorial",
+        "steps": [
+          "Hold PAGE and press MOD: the macro page opens and MOD lights blue.",
+          "Hold FUNC and push encoder A: the setup of macro A opens.",
+          "Turn encoder A to choose FLTR FREQ, and encoder E to set its depth, for example +64.00.",
+          "Press the trig keys of the tracks it should act on; they light red.",
+          "Press NO, then turn encoder A: the filter opens and closes on those tracks, and the kit stays as saved."
+        ]
+      },
+      "screenshots": [
+        "media/macro-page.png",
+        "media/macro-setup.png"
+      ],
+      "captureRecord": "media/capture.json"
+    }
+  },
+  "license": {
+    "spdx": "GPL-2.0-or-later",
+    "file": "LICENSE",
+    "declaration": "The author's own source, from github.com/toonst/digi_macro at 62f0b0a, under GPL-2.0-or-later. Firmware locations are addresses only; no firmware bytes."
+  },
+  "media": [
+    {
+      "path": "media/thumbnail.svg",
+      "kind": "thumbnail",
+      "caption": "Macro Mode: eight knobs, each fanning out to four parameters",
+      "alt": "Eight knobs in a row, the third with four lines fanning out to small parameter bars.",
+      "credit": "toonst",
+      "license": "GPL-2.0-or-later",
+      "source": "Original illustration for this module."
+    },
+    {
+      "path": "media/macro-page.png",
+      "kind": "screenshot",
+      "caption": "Hold PAGE and press MOD: the macro page, eight knobs on A-H (emulator capture).",
+      "alt": "Digitakt II screen with the header Macro Mode and eight empty macro knobs labelled A to H.",
+      "credit": "toonst documentation capture; Elektron interface",
+      "license": "LicenseRef-Digi-UI-Documentation",
+      "source": "original",
+      "capture": {
+        "type": "emulator",
+        "release": "1.17",
+        "moduleVersion": "0.1.0-experimental",
+        "imageSha256": "6be06fd9d3d625e7ddc54c74fcc6f447403f3e2bdbffee50db26f6569d33a625",
+        "setup": "digikit zero_patched (ColdFire, DSP answering zeros); the Modwerk Digitakt II base (ce3e5488) + this module's package (5791a094), linked by the site's builder. UI documentation only."
+      }
+    },
+    {
+      "path": "media/macro-setup.png",
+      "kind": "screenshot",
+      "caption": "FUNC + push an encoder: a macro's setup, here parameter 2 on SRC TUNE with its depth (emulator capture).",
+      "alt": "MODULATION SETUP MACRO MODE screen with four slots, the second showing SRC TUNE and a depth of 34.81.",
+      "credit": "toonst documentation capture; Elektron interface",
+      "license": "LicenseRef-Digi-UI-Documentation",
+      "source": "original",
+      "capture": {
+        "type": "emulator",
+        "release": "1.17",
+        "moduleVersion": "0.1.0-experimental",
+        "imageSha256": "6be06fd9d3d625e7ddc54c74fcc6f447403f3e2bdbffee50db26f6569d33a625",
+        "setup": "digikit zero_patched (ColdFire, DSP answering zeros); the Modwerk Digitakt II base (ce3e5488) + this module's package (5791a094), linked by the site's builder. UI documentation only."
+      }
+    }
+  ]
+}
