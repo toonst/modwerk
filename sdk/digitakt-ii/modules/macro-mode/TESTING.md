@@ -30,7 +30,7 @@ The package's `.run` is 19,793 bytes and its `.bss` 8,275: 28,068 bytes of the s
 | Audio | Not tested: the emulator's runner makes no sound |
 | KIT MANAGER, pattern copy and paste | Not tested with this build; it keeps no kit data, so they have nothing of its to carry |
 
-All emulator runs are in digikit's `zero_patched` runner (digikit `3d3a243`, the ColdFire with the DSP side answering zeros, so the frame interrupt runs) on 10 November 2026, with digi_macro's scenarios at `8b67398` and a symbol map from elekloader's link of the same two packages. The summary is in [evidence/emulator-2026-11-10.json](evidence/emulator-2026-11-10.json).
+All emulator runs are in digikit's `zero_patched` runner (toonst/digikit `3d3a243`, a fork: the runner is not in upstream digikit; the ColdFire with the DSP side answering zeros, so the frame interrupt runs) on 10 November 2026, with digi_macro's scenarios at `8b67398` and a symbol map from elekloader's link of the same two packages. The summary is in [evidence/emulator-2026-11-10.json](evidence/emulator-2026-11-10.json).
 
 ### What the scenarios cover
 

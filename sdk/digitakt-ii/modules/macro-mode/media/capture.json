@@ -6,7 +6,7 @@
  "imageSha256": "6be06fd9d3d625e7ddc54c74fcc6f447403f3e2bdbffee50db26f6569d33a625",
  "firmware": "1.17",
  "build": "The site's builder path: the Modwerk Digitakt II base (ce3e5488) + this folder's Macro Mode 0.1.0-experimental (package 5791a094), linked on stock OS 1.17 by the vendored kit 0.7.0, version MW01.",
- "emulator": "digikit zero_patched (digikit 3d3a243): ColdFire with the DSP side answering zeros, so the frame interrupt runs; the 128x64 frame shown 4x without interpolation",
+ "emulator": "digikit zero_patched (toonst/digikit 3d3a243): ColdFire with the DSP side answering zeros, so the frame interrupt runs; the 128x64 frame shown 4x without interpolation",
  "capturedAt": "2026-11-10",
  "setup": "The emulator's card with its stock project; the run's panel input as each capture's plan says.",
  "captures": [

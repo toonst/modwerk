@@ -3,7 +3,7 @@
   "reportedOn": "2026-11-10",
   "status": "emulator",
   "scope": "macro-mode 0.1.0-experimental alone on the Modwerk Digitakt II base (core 1.1), OS 1.17",
-  "emulator": "digikit zero_patched (digikit 3d3a243): the ColdFire with the DSP side answering zeros, so the frame interrupt runs. No sound.",
+  "emulator": "digikit zero_patched (toonst/digikit 3d3a243): the ColdFire with the DSP side answering zeros, so the frame interrupt runs. No sound.",
   "scenarios": "digi_macro 8b67398, tests/emu",
   "build": {
     "label": "MW01",

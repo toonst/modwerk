@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "measuredOn": "2026-11-10",
   "method": "emulator instruction counts; not time on a unit",
-  "tool": "digi_macro 8b67398 tests/emu/frame_load.py in digikit's zero_patched runner (digikit 3d3a243)",
+  "tool": "digi_macro 8b67398 tests/emu/frame_load.py in digikit's zero_patched runner (toonst/digikit 3d3a243)",
   "imageSha256": "6be06fd9d3d625e7ddc54c74fcc6f447403f3e2bdbffee50db26f6569d33a625",
   "stockSha256": "26c22f6652625ac2cfd47f7ee970d388ed8b6427dae3563c0a6a2f2d334350d5",
   "what": "Instructions from the frame interrupt's first instruction (exception vector 191) to its return, and from mm_ev_frame_params' first instruction to its return, over 200 frames per state. A higher interrupt that comes in between is counted with the frame it interrupts.",
