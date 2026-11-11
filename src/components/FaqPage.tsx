@@ -43,7 +43,7 @@ const SECTIONS: FaqSection[] = [
           <p><strong>Octatrack MKI and MKII:</strong> the original OS {BASE_FIRMWARE.version} .bin. {DOWNLOADS_ENABLED ? 'Builds and downloads are available.' : 'Downloads are paused.'} Review each module’s test records for your model.</p>
           <p><strong>Digitakt mk1:</strong> OS 1.53 or 1.54 .syx. <strong>Digitone mk1 and Digitone Keys:</strong> OS 1.43 or 1.44 .syx. These machines are in preview: builds and .syx downloads are available, and their module libraries are still growing. This does not include Digitakt II or Digitone II.</p>
           <p><strong>Analog Rytm MKII:</strong> OS 1.74 .syx, in preview: builds and .syx downloads are available, and its module library is still growing. Recovery needs a MIDI DIN interface, because the startup menu never appears over USB.</p>
-          <p><strong>Digitakt II:</strong> OS 1.17, in research. Its page offers a core build in the browser for local checks; there are no Modwerk downloads yet.</p>
+          <p><strong>Digitakt II:</strong> OS 1.17 .syx, in preview: its first module is in the library and sets build in the browser for local checks. There are no Modwerk downloads yet.</p>
           <p>Other machines, such as the Digitone II, Syntakt, Analog Keys, Model:Cycles, Zoom multi-effects pedals and the Erica Synths LXR-02, have research pages or an invitation to contribute. A machine page does not mean firmware builds are available. Check the machine’s status and each module’s supported releases before choosing an OS file.</p>
         </>,
       },

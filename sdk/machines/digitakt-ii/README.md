@@ -1,6 +1,6 @@
 # Digitakt II SDK
 
-Modwerk's Digitakt II path is experimental and targets stock OS 1.17 only. The site builds every Digitakt II set on Modwerk's own base ([base-binding.json](base-binding.json)), with the vendored elekloader kit. The machine remains in research: builds can be checked locally, but downloads stay disabled until the exact Modwerk packages are qualified and reviewed.
+Modwerk's Digitakt II path is experimental and targets stock OS 1.17 only. The site builds every Digitakt II set on Modwerk's own base ([base-binding.json](base-binding.json)), with the vendored elekloader kit. The machine is in preview since its first library module, Macro Mode: sets build and are checked locally, and downloads stay disabled until a site build is qualified on a unit and the owner approves them.
 
 ## Modwerk stack
 

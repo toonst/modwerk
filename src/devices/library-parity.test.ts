@@ -9,7 +9,7 @@ import { ModuleComparison } from '../components/ModuleComparison'
 import { DEFAULT_MODULE_SORT } from '../community/module-statistics'
 import { DEVICES_BY_ID } from './registry'
 import { DIGI_MODS, type DigiMod } from './digi-mods'
-import { EmptyMachine, MachineLibrary } from './MachinePages'
+import { MachineLibrary } from './MachinePages'
 import { isCoreBuildPreview } from '../engine/elekloader/protocol'
 
 const noop = () => {}
@@ -48,13 +48,16 @@ describe('machine switching layout', () => {
   })
 })
 
-describe('Digitakt II research preview', () => {
-  it.each(['digitakt-ii'])('offers a local %s core build preview without presenting it as an approved module catalog', id => {
-    const html = renderToStaticMarkup(createElement(EmptyMachine, { device: DEVICES_BY_ID[id] }))
-    expect(html).toContain('href="#' + id + '/configuration"')
-    expect(html).toContain('Open local build preview')
-    expect(DEVICES_BY_ID[id].status).toBe('research')
-    expect(DIGI_MODS.some(mod => mod.device === id)).toBe(false)
+describe('Digitakt II library', () => {
+  // Derived from the module folders, as the Rytm's below.
+  it('lists every Digitakt II module folder at its version for OS 1.17, and leaves the core build preview once a module is in the library', () => {
+    expect(DEVICES_BY_ID['digitakt-ii'].status).toBe('preview')
+    expect(isCoreBuildPreview('digitakt-ii')).toBe(false)
+    const folder = 'sdk/digitakt-ii/modules/'
+    const folders = readdirSync(folder).filter(id => existsSync(folder + id + '/modwerk.module.json')).sort()
+      .map(id => [id, (JSON.parse(readFileSync(folder + id + '/modwerk.module.json', 'utf8')) as { version: string }).version.replace(/-experimental$/, ''), ['1.17']])
+    expect(folders.length).toBeGreaterThan(0)
+    expect(DIGI_MODS.filter(mod => mod.device === 'digitakt-ii').map(mod => [mod.id, mod.version, mod.releases])).toEqual(folders)
   })
 })
 
@@ -117,8 +120,9 @@ describe('All machines library parity', () => {
     expect(html).toContain(count('—', 'downloads'))
     expect(html).not.toContain(count('0', 'downloads'))
     expect(html).toContain('Popularity counts are currently unavailable.')
-    expect(html.match(/aria-label="Build firmware for/g)).toHaveLength(4)
+    expect(html.match(/aria-label="Build firmware for/g)).toHaveLength(5)
     expect(html).toContain('href="#digitakt/configuration"')
+    expect(html).toContain('href="#digitakt-ii/configuration"')
     expect(html).toContain('href="#digitone/configuration"')
     expect(html).toContain('href="#analog-rytm-mkii/configuration"')
   })

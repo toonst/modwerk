@@ -243,14 +243,14 @@
     "order": 40,
     "name": "Digitakt II",
     "family": "elektron",
-    "status": "research",
-    "summary": "Experimental OS 1.17 support on Modwerk's own base, from core-dt2 1.1's source. No module is in the library yet, and downloads stay off.",
+    "status": "preview",
+    "summary": "OS 1.17 on Modwerk's own base, core 1.1. Macro Mode is the first library module. Builds are checked locally; downloads stay off until a site build is qualified on a unit.",
     "steps": {
       "format": "done",
       "rebuild": "done",
-      "boot": "started",
+      "boot": "done",
       "core": "done",
-      "mods": "open"
+      "mods": "done"
     },
     "art": {
       "body": "compact",
@@ -269,7 +269,7 @@
           ]
         }
       ],
-      "flash": "Normal OS updates use Elektron Transfer with the owner's own stock OS file. Modwerk's DTII build path is experimental and downloads remain disabled.",
+      "flash": "Normal OS updates use Elektron Transfer with the owner's own stock OS file. Modwerk builds Digitakt II sets locally; downloads remain disabled until a site build is qualified on a unit.",
       "recovery": "Hold FUNC while powering on, choose TRIG 4 (OS UPGRADE), then send the owner's stock .syx over MIDI DIN; recovery mode does not use USB."
     },
     "research": [

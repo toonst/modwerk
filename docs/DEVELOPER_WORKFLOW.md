@@ -4,7 +4,7 @@ This is the common context for the **Start developing** page and its coding-agen
 
 ## Choose an instrument
 
-The instrument dropdown lists every profile in `sdk/machines/<id>/machine.json`, through the generated registry. A listing is not evidence that a module builder exists. Octatrack, Digitakt mk1, Digitone mk1/Keys and Analog Rytm MKII have SDK guides and library modules; the Analog Four MKII and Digitakt II have research guides and no module yet. Other instruments enter the integration flow: research the stock format/rebuild/recovery, integrate the SDK/core/toolchain/browser builder, qualify the exact build on hardware, and obtain owner review before publishing modules. Read the selected profile and its credited research. Do not apply another instrument's core slots, hooks, build commands or memory budgets by analogy.
+The instrument dropdown lists every profile in `sdk/machines/<id>/machine.json`, through the generated registry. A listing is not evidence that a module builder exists. Octatrack, Digitakt mk1, Digitone mk1/Keys, Analog Rytm MKII and Digitakt II have SDK guides and library modules; the Analog Four MKII has a research guide and no module yet. Other instruments enter the integration flow: research the stock format/rebuild/recovery, integrate the SDK/core/toolchain/browser builder, qualify the exact build on hardware, and obtain owner review before publishing modules. Read the selected profile and its credited research. Do not apply another instrument's core slots, hooks, build commands or memory budgets by analogy.
 
 ## Check what already exists
 

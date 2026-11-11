@@ -1,0 +1,1 @@
+Digitakt II: the machine moves from research to preview with its first library module, Macro Mode. Its library page lists the module and the configuration page builds sets with it for local checks. Downloads stay off.
