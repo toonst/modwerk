@@ -21,7 +21,8 @@ The package's `.run` is 19,793 bytes and its `.bss` 8,275: 28,068 bytes of the s
 | Emulator: the project's setup, save and load | Passed, 23 of 23 (`tests/emu/project_only.py`) |
 | Emulator: round trips through the stock OS, a conflict | Passed, 13 of 13 (`tests/emu/compat_project.py`) |
 | Emulator: the macro page, the setup, naming, frame values, LEDs | 91 of 94 (`tests/emu/scenario.py`); the three are its restart checks, see below |
-| Emulator: CREATE NEW | The setup and the knob positions that were on stay |
+| Emulator: CREATE NEW | The new project starts with a copy of the setup and the knob positions that were on, as the module does for any project without a setup |
+| A project saved on the stock OS, never with the module | Not tested |
 | Emulator: with Perform Direct and Perform Levels | Builds and passes the same image checks (`5f2ae3ba…`); boots to the main screen and the macro page opens |
 | Emulator: frame interrupt load | Counted, below |
 | Unit, this image | Not tested |

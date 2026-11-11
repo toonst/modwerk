@@ -71,7 +71,7 @@
     "limitations": [
       "Needs the Digitakt II base (core 1.1): its frame values, key LEDs and project data. It does not build on core 1.0.",
       "One setup for the whole project: every pattern and kit shares it. It keeps no kit data, so the kit records stay free for other modules.",
-      "CREATE NEW keeps the setup and the knob positions that were on; LOAD PROJECT brings the loaded project's own.",
+      "A project without a setup (CREATE NEW, or one saved on the stock OS) starts with a copy of the setup and knob positions that were on.",
       "Macros are for playing: they cannot be recorded or parameter-locked, and they never change the saved sound.",
       "Machine-specific parameters and the LFOs cannot be chosen as destinations yet.",
       "Per-kit setups made with digi_macro's own build are not read; nor are setups from digi_macro builds before 0.1."
